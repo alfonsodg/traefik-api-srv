@@ -31,6 +31,7 @@ import (
 	"github.com/traefik/traefik/v3/pkg/middlewares/ipallowlist"
 	"github.com/traefik/traefik/v3/pkg/middlewares/ipwhitelist"
 	"github.com/traefik/traefik/v3/pkg/middlewares/observability"
+	"github.com/traefik/traefik/v3/pkg/middlewares/opa"
 	"github.com/traefik/traefik/v3/pkg/middlewares/passtlsclientcert"
 	"github.com/traefik/traefik/v3/pkg/middlewares/ratelimiter"
 	"github.com/traefik/traefik/v3/pkg/middlewares/redirect"
@@ -268,6 +269,16 @@ func (b *Builder) buildConstructor(ctx context.Context, middlewareName string) (
 		}
 		middleware = func(next http.Handler) (http.Handler, error) {
 			return inflightreq.New(ctx, next, *config.InFlightReq, middlewareName)
+		}
+	}
+
+	// OPA
+	if config.OPA != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return opa.New(ctx, next, *config.OPA, middlewareName)
 		}
 	}
 

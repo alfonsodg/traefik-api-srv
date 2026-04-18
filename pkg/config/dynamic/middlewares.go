@@ -47,6 +47,7 @@ type Middleware struct {
 	Retry             *Retry             `json:"retry,omitempty" toml:"retry,omitempty" yaml:"retry,omitempty" export:"true"`
 	ContentType       *ContentType       `json:"contentType,omitempty" toml:"contentType,omitempty" yaml:"contentType,omitempty" label:"allowEmpty" file:"allowEmpty" kv:"allowEmpty" export:"true"`
 	GrpcWeb           *GrpcWeb           `json:"grpcWeb,omitempty" toml:"grpcWeb,omitempty" yaml:"grpcWeb,omitempty" export:"true"`
+	OPA               *OPA               `json:"opa,omitempty" toml:"opa,omitempty" yaml:"opa,omitempty" export:"true"`
 
 	Plugin map[string]PluginConf `json:"plugin,omitempty" toml:"plugin,omitempty" yaml:"plugin,omitempty" export:"true"`
 
@@ -930,4 +931,26 @@ type RewriteTarget struct {
 	Replacement string `json:"replacement,omitempty"`
 	// XForwardedPrefix defines the value of the X-Forwarded-Prefix header.
 	XForwardedPrefix string `json:"xForwardedPrefix,omitempty"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// OPA holds the Open Policy Agent middleware configuration.
+type OPA struct {
+	// URL is the OPA server REST API endpoint (remote mode).
+	URL string `json:"url,omitempty" toml:"url,omitempty" yaml:"url,omitempty" export:"true"`
+	// Policy is an inline Rego policy (embedded mode).
+	Policy string `json:"policy,omitempty" toml:"policy,omitempty" yaml:"policy,omitempty"`
+	// PolicyPath is the path to a Rego policy file (embedded mode).
+	PolicyPath string `json:"policyPath,omitempty" toml:"policyPath,omitempty" yaml:"policyPath,omitempty"`
+	// DecisionPath is the OPA document path to query (e.g. "authz/allow"). Defaults to "result".
+	DecisionPath string `json:"decisionPath,omitempty" toml:"decisionPath,omitempty" yaml:"decisionPath,omitempty" export:"true"`
+	// AllowField is the field name in the OPA response that indicates allow/deny. Defaults to "allow".
+	AllowField string `json:"allowField,omitempty" toml:"allowField,omitempty" yaml:"allowField,omitempty" export:"true"`
+	// IncludeBody includes the request body in the OPA input document.
+	IncludeBody bool `json:"includeBody,omitempty" toml:"includeBody,omitempty" yaml:"includeBody,omitempty" export:"true"`
+	// MaxBodySize is the maximum body size to read when IncludeBody is true. Defaults to 1MB.
+	MaxBodySize int64 `json:"maxBodySize,omitempty" toml:"maxBodySize,omitempty" yaml:"maxBodySize,omitempty" export:"true"`
+	// Timeout is the HTTP timeout for remote OPA requests.
+	Timeout ptypes.Duration `json:"timeout,omitempty" toml:"timeout,omitempty" yaml:"timeout,omitempty" export:"true"`
 }
