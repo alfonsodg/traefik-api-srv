@@ -47,6 +47,7 @@ type Middleware struct {
 	Retry             *Retry             `json:"retry,omitempty" toml:"retry,omitempty" yaml:"retry,omitempty" export:"true"`
 	ContentType       *ContentType       `json:"contentType,omitempty" toml:"contentType,omitempty" yaml:"contentType,omitempty" label:"allowEmpty" file:"allowEmpty" kv:"allowEmpty" export:"true"`
 	GrpcWeb           *GrpcWeb           `json:"grpcWeb,omitempty" toml:"grpcWeb,omitempty" yaml:"grpcWeb,omitempty" export:"true"`
+	DistributedRateLimit *DistributedRateLimit `json:"distributedRateLimit,omitempty" toml:"distributedRateLimit,omitempty" yaml:"distributedRateLimit,omitempty" export:"true"`
 
 	Plugin map[string]PluginConf `json:"plugin,omitempty" toml:"plugin,omitempty" yaml:"plugin,omitempty" export:"true"`
 
@@ -930,4 +931,24 @@ type RewriteTarget struct {
 	Replacement string `json:"replacement,omitempty"`
 	// XForwardedPrefix defines the value of the X-Forwarded-Prefix header.
 	XForwardedPrefix string `json:"xForwardedPrefix,omitempty"`
+}
+
+// +k8s:deepcopy-gen=true
+
+// DistributedRateLimit holds the distributed rate limiting middleware configuration.
+type DistributedRateLimit struct {
+	// Average is the maximum rate of requests per period.
+	Average int64 `json:"average" toml:"average" yaml:"average" export:"true"`
+	// Burst is the maximum number of requests allowed to go through in the same arbitrarily small period of time.
+	Burst int64 `json:"burst,omitempty" toml:"burst,omitempty" yaml:"burst,omitempty" export:"true"`
+	// Period is the rate limiter evaluation period. Defaults to 1 second.
+	Period ptypes.Duration `json:"period,omitempty" toml:"period,omitempty" yaml:"period,omitempty" export:"true"`
+	// RedisURL is the Redis connection URL (e.g. redis://localhost:6379/0).
+	RedisURL string `json:"redisUrl" toml:"redisUrl" yaml:"redisUrl"`
+	// RedisPassword is the Redis authentication password.
+	RedisPassword string `json:"redisPassword,omitempty" toml:"redisPassword,omitempty" yaml:"redisPassword,omitempty"`
+	// KeyFunc defines how to extract the rate limit key. Values: clientIP (default), header, path.
+	KeyFunc string `json:"keyFunc,omitempty" toml:"keyFunc,omitempty" yaml:"keyFunc,omitempty" export:"true"`
+	// KeyHeader is the header name to use when KeyFunc is "header".
+	KeyHeader string `json:"keyHeader,omitempty" toml:"keyHeader,omitempty" yaml:"keyHeader,omitempty" export:"true"`
 }

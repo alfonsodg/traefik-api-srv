@@ -18,6 +18,7 @@ import (
 	"github.com/traefik/traefik/v3/pkg/middlewares/compress"
 	"github.com/traefik/traefik/v3/pkg/middlewares/contenttype"
 	"github.com/traefik/traefik/v3/pkg/middlewares/customerrors"
+	"github.com/traefik/traefik/v3/pkg/middlewares/distributedratelimiter"
 	"github.com/traefik/traefik/v3/pkg/middlewares/encodedcharacters"
 	"github.com/traefik/traefik/v3/pkg/middlewares/gatewayapi/headermodifier"
 	gapiredirect "github.com/traefik/traefik/v3/pkg/middlewares/gatewayapi/redirect"
@@ -205,6 +206,16 @@ func (b *Builder) buildConstructor(ctx context.Context, middlewareName string) (
 		}
 		middleware = func(next http.Handler) (http.Handler, error) {
 			return auth.NewDigest(ctx, next, *config.DigestAuth, middlewareName)
+		}
+	}
+
+	// DistributedRateLimit
+	if config.DistributedRateLimit != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return distributedratelimiter.New(ctx, next, *config.DistributedRateLimit, middlewareName)
 		}
 	}
 
