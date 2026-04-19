@@ -8,6 +8,7 @@ RUN CGO_ENABLED=0 go build -o /traefik-xp ./cmd/traefik
 
 # Rootless runtime
 FROM alpine:3.21
+LABEL org.opencontainers.image.source=https://github.com/ccvass/traefik-xpx
 RUN apk add --no-cache ca-certificates tzdata && \
     addgroup -g 65532 -S traefik && \
     adduser -u 65532 -S traefik -G traefik && \
