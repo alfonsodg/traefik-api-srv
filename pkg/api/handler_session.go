@@ -2,6 +2,7 @@ package api
 
 import (
 	"crypto/hmac"
+	"os"
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
@@ -13,11 +14,12 @@ import (
 )
 
 type sessionManager struct {
-	mu       sync.RWMutex
-	tokens   map[string]sessionInfo
-	users    map[string]string // user -> password
-	secret   []byte
-	tokenTTL time.Duration
+	mu        sync.RWMutex
+	tokens    map[string]sessionInfo
+	users     map[string]string // user -> password
+	secret    []byte
+	tokenTTL  time.Duration
+	usersFile string
 }
 
 type sessionInfo struct {
@@ -38,12 +40,14 @@ type loginResponse struct {
 
 func newSessionManager(authUser, authPassword string) *sessionManager {
 	sm := &sessionManager{
-		tokens:   make(map[string]sessionInfo),
-		users:    make(map[string]string),
-		secret:   []byte(authPassword + "-jwt-secret"),
-		tokenTTL: 24 * time.Hour,
+		tokens:    make(map[string]sessionInfo),
+		users:     make(map[string]string),
+		secret:    []byte(authPassword + "-jwt-secret"),
+		tokenTTL:  24 * time.Hour,
+		usersFile: "/etc/traefik/users.json",
 	}
 	sm.users[authUser] = authPassword
+	sm.loadUsersFromFile()
 	// Cleanup expired tokens periodically
 	go func() {
 		for range time.NewTicker(10 * time.Minute).C {
@@ -190,6 +194,7 @@ func (sm *sessionManager) handleAddUser(rw http.ResponseWriter, req *http.Reques
 	sm.mu.Lock()
 	sm.users[lr.Username] = lr.Password
 	sm.mu.Unlock()
+	sm.saveUsersToFile()
 	rw.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(rw).Encode(map[string]string{"status": "created", "username": lr.Username})
 }
@@ -203,6 +208,30 @@ func (sm *sessionManager) handleDeleteUser(rw http.ResponseWriter, req *http.Req
 	sm.mu.Lock()
 	delete(sm.users, body.Username)
 	sm.mu.Unlock()
+	sm.saveUsersToFile()
 	rw.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(rw).Encode(map[string]string{"status": "deleted", "username": body.Username})
+}
+
+func (sm *sessionManager) loadUsersFromFile() {
+	data, err := os.ReadFile(sm.usersFile)
+	if err != nil {
+		return
+	}
+	var users map[string]string
+	if err := json.Unmarshal(data, &users); err != nil {
+		return
+	}
+	sm.mu.Lock()
+	for k, v := range users {
+		sm.users[k] = v
+	}
+	sm.mu.Unlock()
+}
+
+func (sm *sessionManager) saveUsersToFile() {
+	sm.mu.RLock()
+	data, _ := json.MarshalIndent(sm.users, "", "  ")
+	sm.mu.RUnlock()
+	os.WriteFile(sm.usersFile, data, 0600)
 }
