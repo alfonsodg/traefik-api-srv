@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/assets/logo-light.svg" alt="Traefik-XP" width="400"></p>
+
 # Traefik-XP
 
 **The open-source API Gateway that replaces 5 commercial Traefik products in one.**
@@ -44,6 +46,7 @@ Dashboard: `http://localhost:8099/dashboard/`
 
 ## Documentation
 
+- [Installation Guide](docs/INSTALLATION.md) — Docker, Swarm, binary, systemd
 - [Feature Guide](docs/features/README.md) — All features with config examples
 - [Migration from Traefik 2.x](docs/MIGRATION-VERTIX.md) — Step-by-step migration plan
 - [Disaster Recovery](docs/DISASTER-RECOVERY.md) — Backup, restore, rollback
