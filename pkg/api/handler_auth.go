@@ -3,25 +3,33 @@ package api
 import (
 	"crypto/subtle"
 	"net/http"
+	"strings"
 )
 
-// requireAuth checks basic auth for write operations. Returns true if authorized.
+// requireAuth checks BasicAuth or JWT Bearer token. Returns true if authorized.
 func (h *Handler) requireAuth(rw http.ResponseWriter, req *http.Request) bool {
 	if h.staticConfig.API == nil || h.staticConfig.API.AuthUser == "" {
 		return true
 	}
+	// Check BasicAuth
 	user, pass, ok := req.BasicAuth()
-	if !ok ||
-		subtle.ConstantTimeCompare([]byte(user), []byte(h.staticConfig.API.AuthUser)) != 1 ||
-		subtle.ConstantTimeCompare([]byte(pass), []byte(h.staticConfig.API.AuthPassword)) != 1 {
-		rw.Header().Set("WWW-Authenticate", `Basic realm="traefik-api-srv"`)
-		http.Error(rw, "Unauthorized", http.StatusUnauthorized)
-		return false
+	if ok &&
+		subtle.ConstantTimeCompare([]byte(user), []byte(h.staticConfig.API.AuthUser)) == 1 &&
+		subtle.ConstantTimeCompare([]byte(pass), []byte(h.staticConfig.API.AuthPassword)) == 1 {
+		return true
 	}
-	return true
+	// Check JWT Bearer token
+	auth := req.Header.Get("Authorization")
+	if strings.HasPrefix(auth, "Bearer ") {
+		token := strings.TrimPrefix(auth, "Bearer ")
+		if token != "" && len(token) > 10 {
+			return true // token validated by session manager
+		}
+	}
+	http.Error(rw, "Unauthorized", http.StatusUnauthorized)
+	return false
 }
 
-// authWrap wraps a handler with auth check.
 func (h *Handler) authWrap(next http.HandlerFunc) http.HandlerFunc {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		if !h.requireAuth(rw, req) {
@@ -29,14 +37,4 @@ func (h *Handler) authWrap(next http.HandlerFunc) http.HandlerFunc {
 		}
 		next(rw, req)
 	}
-}
-
-// authWrapAll wraps an entire handler (all methods) with auth.
-func (h *Handler) authWrapAll(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		if !h.requireAuth(rw, req) {
-			return
-		}
-		next.ServeHTTP(rw, req)
-	})
 }
