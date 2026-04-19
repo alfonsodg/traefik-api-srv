@@ -5,6 +5,7 @@ import { fetcher } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import { StatusBadge, TypeBadge } from '@/components/Badge'
 import { Modal } from '@/components/Modal'
+import { FlowDiagram } from '@/components/FlowDiagram'
 import { Stat } from './shared'
 import { COLORS } from '@/lib/design'
 import {
@@ -107,6 +108,7 @@ function DetailModal({ data, onClose }: { data: any; onClose: () => void }) {
     <Modal open={true} onClose={onClose} color="#2AA2C1" size="lg">
       <h3 className="font-semibold text-lg mb-4" style={{ color: '#2AA2C1' }}>{data.name}</h3>
       <div className="space-y-4">
+        {data.rule && <div className="glass p-3 relative"><FlowDiagram router={data} /></div>}
         {data.rule && <div><span className="text-xs text-zinc-500">Rule</span><p className="text-sm font-mono mt-1 p-3 rounded-lg" style={{ backgroundColor: '#09090b', color: '#34d399' }}>{data.rule}</p></div>}
         {data.service && <div className="flex gap-8"><div><span className="text-xs text-zinc-500">Service</span><p className="text-sm mt-1">{data.service}</p></div></div>}
         {data.entryPoints && <div><span className="text-xs text-zinc-500">Entry Points</span><div className="flex gap-1 mt-1">{data.entryPoints.map((ep: string) => <span key={ep} style={{ backgroundColor: '#3b82f618', color: '#60a5fa', borderRadius: 9999, padding: '3px 10px', fontSize: 11, fontWeight: 600 }}>{ep}</span>)}</div></div>}
