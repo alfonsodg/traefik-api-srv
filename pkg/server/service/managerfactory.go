@@ -53,6 +53,9 @@ func NewManagerFactory(staticConfiguration static.Configuration, routinesPool *s
 					log.Error().Err(err).Msg("Error appending dashboard to API router")
 				}
 
+				if staticConfiguration.API.AuthUser != "" && staticConfiguration.API.AuthPassword != "" {
+					return basicAuthWrap(router, staticConfiguration.API.AuthUser, staticConfiguration.API.AuthPassword)
+				}
 				return router
 			}
 		} else {
@@ -87,4 +90,16 @@ func (f *ManagerFactory) Build(configuration *runtime.Configuration) *Manager {
 
 	internalHandlers := NewInternalHandlers(apiHandler, f.restHandler, f.metricsHandler, f.pingHandler, f.dashboardHandler, f.acmeHTTPHandler)
 	return NewManager(configuration.Services, f.observabilityMgr, f.routinesPool, f.transportManager, f.proxyBuilder, internalHandlers)
+}
+
+func basicAuthWrap(next http.Handler, user, password string) http.Handler {
+	return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+		u, p, ok := req.BasicAuth()
+		if !ok || u != user || p != password {
+			rw.Header().Set("WWW-Authenticate", `Basic realm="traefik-api-srv"`)
+			http.Error(rw, "Unauthorized", http.StatusUnauthorized)
+			return
+		}
+		next.ServeHTTP(rw, req)
+	})
 }
