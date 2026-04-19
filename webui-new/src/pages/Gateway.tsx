@@ -49,6 +49,7 @@ export function GatewayPage() {
   const { data: certs } = useSWR('/certificates', fetcher)
   const [form, setForm] = useState<string | null>(null)
   const [editing, setEditing] = useState<{type: string; name: string; data: unknown} | null>(null)
+  const [detail, setDetail] = useState<any>(null)
   const [mwType, setMwType] = useState('apiKey')
   const [name, setName] = useState('')
   const [json, setJson] = useState('')
@@ -102,7 +103,7 @@ export function GatewayPage() {
         <button onClick={() => { setForm('service'); setName(''); setJson(JSON.stringify({ loadBalancer: { servers: [{ url: 'http://127.0.0.1:8080' }], healthCheck: { path: '/health', interval: '10s' } } }, null, 2)) }} className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all" style={{ backgroundColor: '#a855f715', color: '#a855f7', borderWidth: 1, borderStyle: 'solid', borderColor: '#a855f730' }}><Plus size={14} />Add Service</button>
         {form === 'service' && <AddForm title="New Service" name={name} setName={setName} json={json} setJson={setJson} color="#a855f7" onSave={saveService} onCancel={() => setForm(null)} disabled={!name} />}
         <div className="space-y-2">{sArr.map((s: any) => (
-          <div key={s.name} className={`p-4 rounded-lg border ${s.provider === 'file' ? 'glass' : 'glass'}`}>
+          <div key={s.name} onClick={() => setDetail(s)} className="p-4 rounded-lg border glass cursor-pointer hover:scale-[1.01] transition-all">
             <div className="flex justify-between items-center">
               <div>
                 <p className="font-medium text-sm">{s.name}</p>
@@ -130,7 +131,7 @@ export function GatewayPage() {
         <button onClick={() => { setForm('router'); setName(''); setJson(JSON.stringify({ rule: "Host(`app.example.com`)", service: "my-service", entryPoints: ["web"], middlewares: [] }, null, 2)) }} className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all" style={{ backgroundColor: '#2AA2C115', color: '#2AA2C1', borderWidth: 1, borderStyle: 'solid', borderColor: '#2AA2C130' }}><Plus size={14} />Add Route</button>
         {form === 'router' && <Modal open={true} onClose={() => setForm(null)} color="#2AA2C1"><RouterFormFull middlewares={mArr.map((m: any) => m.name.replace(/@.*/, ''))} onSave={async ({name: n, config}: any) => { await api.put(`/config/http/routers/${n}`, config); mutateAll(); setForm(null) }} onCancel={() => setForm(null)} /></Modal>}
         <div className="space-y-2">{rArr.map((r: any) => (
-          <div key={r.name} className={`p-4 rounded-lg border ${r.provider === 'file' ? 'glass' : 'glass'}`}>
+          <div key={r.name} onClick={() => setDetail(r)} className="p-4 rounded-lg border glass cursor-pointer hover:scale-[1.01] transition-all">
             <div className="flex justify-between items-center">
               <div>
                 <p className="font-medium text-sm">{r.name}</p>
@@ -186,7 +187,7 @@ export function GatewayPage() {
           <AddForm title={`New ${ALL_MW_TYPES[mwType]?.label || mwType}`} name={name} setName={setName} json={json} setJson={setJson} color="emerald" onSave={saveMw} onCancel={() => setForm(null)} disabled={!name} />
         </>}
         <div className="space-y-2">{mArr.map((m: any) => (
-          <div key={m.name} className={`flex justify-between items-center p-4 rounded-lg border ${m.provider === 'file' ? 'glass' : 'glass'}`}>
+          <div key={m.name} onClick={() => setDetail(m)} className="flex justify-between items-center p-4 rounded-lg border glass cursor-pointer hover:scale-[1.01] transition-all">
             <div>
               <p className="font-medium text-sm">{m.name}</p>
               <div className="flex items-center gap-2 mt-1"><TypeBadge type={m.type} /><StatusBadge status={m.status} /><span style={{ fontSize: 10, color: '#52525b' }}>{m.provider}</span></div>
@@ -287,6 +288,26 @@ export function GatewayPage() {
           <p className="text-xs text-zinc-600 mt-2">Configure providers in the static config (traefik.yml)</p>
         </div>
       </div>}
+
+      {/* Detail Modal */}
+      {detail && (
+        <Modal open={true} onClose={() => setDetail(null)} color="#2AA2C1">
+          <h3 className="font-semibold text-lg mb-4" style={{ color: '#2AA2C1' }}>{detail.name}</h3>
+          <div className="space-y-3">
+            {detail.rule && <div><span className="text-xs text-zinc-500">Rule</span><p className="text-sm font-mono mt-1 p-2 rounded-lg" style={{ backgroundColor: '#09090b', color: '#34d399' }}>{detail.rule}</p></div>}
+            {detail.service && <div><span className="text-xs text-zinc-500">Service</span><p className="text-sm mt-1">{detail.service}</p></div>}
+            {detail.entryPoints && <div><span className="text-xs text-zinc-500">Entry Points</span><div className="flex gap-1 mt-1">{detail.entryPoints.map((ep: string) => <span key={ep} style={{ backgroundColor: '#3b82f618', color: '#60a5fa', borderRadius: 9999, padding: '2px 8px', fontSize: 11, fontWeight: 600 }}>{ep}</span>)}</div></div>}
+            {detail.middlewares && <div><span className="text-xs text-zinc-500">Middlewares</span><div className="flex gap-1 mt-1 flex-wrap">{detail.middlewares.map((m: string) => <span key={m} style={{ backgroundColor: '#f9731618', color: '#fb923c', borderRadius: 9999, padding: '2px 8px', fontSize: 11, fontWeight: 600 }}>{m}</span>)}</div></div>}
+            {detail.tls && <div><span className="text-xs text-zinc-500">TLS</span><p className="text-sm mt-1"><span style={{ backgroundColor: '#10b98118', color: '#34d399', borderRadius: 9999, padding: '2px 8px', fontSize: 11, fontWeight: 600 }}>Resolver: {detail.tls.certResolver || 'manual'}</span></p></div>}
+            {detail.loadBalancer?.servers && <div><span className="text-xs text-zinc-500">Servers</span><div className="mt-1 space-y-1">{detail.loadBalancer.servers.map((s: any, i: number) => <p key={i} className="text-sm font-mono p-2 rounded-lg" style={{ backgroundColor: '#09090b' }}>{s.url}</p>)}</div></div>}
+            {detail.loadBalancer?.healthCheck && <div><span className="text-xs text-zinc-500">Health Check</span><p className="text-sm mt-1">Path: {detail.loadBalancer.healthCheck.path} • Interval: {detail.loadBalancer.healthCheck.interval}</p></div>}
+            {detail.type && <div><span className="text-xs text-zinc-500">Type</span><p className="text-sm mt-1"><TypeBadge type={detail.type} /></p></div>}
+            <div><span className="text-xs text-zinc-500">Status</span><p className="text-sm mt-1"><StatusBadge status={detail.status} /></p></div>
+            <div><span className="text-xs text-zinc-500">Provider</span><p className="text-sm mt-1">{detail.provider}</p></div>
+            <details className="mt-4"><summary className="text-xs text-zinc-500 cursor-pointer">Raw JSON</summary><pre className="text-xs font-mono mt-2 p-3 rounded-lg overflow-auto max-h-60" style={{ backgroundColor: '#09090b', color: '#34d399' }}>{JSON.stringify(detail, null, 2)}</pre></details>
+          </div>
+        </Modal>
+      )}
     </div>
   )
 }
