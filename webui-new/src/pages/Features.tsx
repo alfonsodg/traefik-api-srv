@@ -32,9 +32,9 @@ export function SecurityPage() {
         <div className="flex gap-2 flex-wrap">
           <ActionBtn label="Add WAF" onClick={() => startAdd('waf')} color={COLORS.security.accent} />
           <ActionBtn label="Add API Key" onClick={() => startAdd('apikey')} color={COLORS.auth.accent} />
-          <ActionBtn label="Add JWT" onClick={() => startAdd('jwt')} color={COLORS.identity.accent} />
-          <ActionBtn label="Add OIDC" onClick={() => startAdd('oidc')} color={COLORS.identity.accent} />
-          <ActionBtn label="Add HMAC" onClick={() => startAdd('hmac')} color={COLORS.identity.accent} />
+          <ActionBtn label="Add JWT" onClick={() => startAdd('jwt')} color={COLORS.traffic.accent} />
+          <ActionBtn label="Add OIDC" onClick={() => startAdd('oidc')} color={COLORS.cache.accent} />
+          <ActionBtn label="Add HMAC" onClick={() => startAdd('hmac')} color={COLORS.resilience.accent} />
         </div>
       </div>
       {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}

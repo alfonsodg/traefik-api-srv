@@ -9,9 +9,9 @@ import {
 } from 'lucide-react'
 import type { Overview, Entrypoint, Middleware } from '@/types/api'
 
-function StatCard({ value, label }: { value: number | string; label: string }) {
+function StatCard({ value, label, color }: { value: number | string; label: string; color?: string }) {
   return (
-    <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2 min-w-[90px]">
+    <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2 min-w-[90px]" style={color ? { borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: color } : {}}>
       <p className="text-2xl font-extrabold tracking-tight">{value}</p>
       <p className="text-[9px] text-zinc-500 uppercase tracking-widest font-semibold">{label}</p>
     </div>
@@ -83,10 +83,10 @@ function HealthBanner({ overview, entrypoints }: { overview: Overview; entrypoin
           </div>
         </div>
         <div className="flex gap-4">
-          <StatCard value={totalRoutes} label="Routes" />
-          <StatCard value={totalSvc} label="Services" />
-          <StatCard value={overview.http.middlewares.total} label="Middlewares" />
-          <StatCard value={entrypoints.length} label="Endpoints" />
+          <StatCard value={totalRoutes} label="Routes" color="#2AA2C1" />
+          <StatCard value={totalSvc} label="Services" color="#a855f7" />
+          <StatCard value={overview.http.middlewares.total} label="Middlewares" color="#10b981" />
+          <StatCard value={entrypoints.length} label="Endpoints" color="#3b82f6" />
         </div>
       </div>
     </div>
@@ -97,7 +97,7 @@ function EntrypointList({ entrypoints }: { entrypoints: Entrypoint[] }) {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {entrypoints.map((ep) => (
-        <div key={ep.name} className="bg-zinc-900 border border-zinc-800 rounded-lg p-3 flex items-center gap-3">
+        <div key={ep.name} className="bg-zinc-900 border border-zinc-800 rounded-lg p-3 flex items-center gap-3" style={{ borderLeftWidth: 3, borderLeftStyle: 'solid', borderLeftColor: '#2AA2C1' }}>
           <div className="p-2 rounded-md bg-brand/10">
             <Activity size={20} className="text-brand" />
           </div>
@@ -206,7 +206,7 @@ export function DashboardPage() {
             // show all protocols even if empty
             return (
               <div key={proto} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
-                <h3 className="font-bold uppercase text-sm text-brand mb-2 tracking-wider">{proto}</h3>
+                <h3 className="font-bold uppercase text-sm mb-2 tracking-wider" style={{ color: proto === 'http' ? '#2AA2C1' : proto === 'tcp' ? '#a855f7' : '#f59e0b' }}>{proto}</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-zinc-400">Routers</span>

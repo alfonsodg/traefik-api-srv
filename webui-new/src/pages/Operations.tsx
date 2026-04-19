@@ -49,8 +49,8 @@ export function ClustersPage() {
           <span className="flex items-center gap-1.5 text-sm font-semibold" style={{ color: '#34d399' }}><span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#34d399', display: 'inline-block' }} /> Healthy</span>
         </div>
         <div className="grid grid-cols-4 gap-4">
-          {[['Routes', (overview as any)?.http?.routers?.total || 0], ['Services', (overview as any)?.http?.services?.total || 0], ['Middlewares', (overview as any)?.http?.middlewares?.total || 0], ['Entrypoints', Array.isArray(entrypoints) ? entrypoints.length : 0]].map(([l, v]) => (
-            <div key={l as string} className="bg-zinc-800 rounded-lg p-3"><p className="text-2xl font-bold">{v as number}</p><p className="text-[10px] text-zinc-500 uppercase">{l as string}</p></div>
+          {[['Routes', (overview as any)?.http?.routers?.total || 0, '#2AA2C1'], ['Services', (overview as any)?.http?.services?.total || 0, '#a855f7'], ['Middlewares', (overview as any)?.http?.middlewares?.total || 0, '#10b981'], ['Entrypoints', Array.isArray(entrypoints) ? entrypoints.length : 0, '#3b82f6']].map(([l, v, c]) => (
+            <div key={l as string} className="bg-zinc-800 rounded-lg p-3" style={{ borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: c as string }}><p className="text-2xl font-bold">{v as number}</p><p className="text-[10px] text-zinc-500 uppercase">{l as string}</p></div>
           ))}
         </div>
       </div>
@@ -58,7 +58,7 @@ export function ClustersPage() {
       {instances.map((inst: any, i: number) => (
         <div key={i} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 flex justify-between items-center">
           <div><p className="font-semibold">{inst.name}</p><p className="text-sm text-zinc-500">{inst.url} {inst.region && `• ${inst.region}`}</p></div>
-          <button onClick={() => remove(i)} className="p-2 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400"><Trash2 size={16} /></button>
+          <div className="flex items-center gap-3"><StatusBadge status="enabled" /><button onClick={() => remove(i)} className="p-2 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400"><Trash2 size={16} /></button></div>
         </div>
       ))}
 
@@ -84,7 +84,7 @@ export function GrafanaPage() {
         {Array.isArray(dashboards) && dashboards.map((d: any) => (
           <div key={d.uid} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 flex justify-between items-center">
             <div><p className="font-semibold">{d.title}</p><p className="text-sm text-zinc-500">{d.description}</p><p className="text-xs mt-1 flex items-center gap-2"><span style={{ color: '#71717a' }}>{d.panels?.length || 0} panels</span><span style={{ backgroundColor: '#2AA2C118', color: '#2AA2C1', borderRadius: 9999, padding: '2px 8px', fontSize: 10, fontWeight: 600 }}>{d.uid}</span></p></div>
-            <button onClick={() => copy(d)} className={`px-4 py-2 rounded-lg text-sm font-semibold ${copied === d.uid ? 'bg-emerald-600 text-white' : 'bg-zinc-800 hover:bg-zinc-700'}`}>{copied === d.uid ? '✓ Copied!' : 'Copy JSON'}</button>
+            <button onClick={() => copy(d)} className="px-4 py-2 rounded-lg text-sm font-semibold" style={copied === d.uid ? { backgroundColor: '#10b981', color: '#fff' } : { backgroundColor: '#2AA2C115', color: '#2AA2C1', borderWidth: 1, borderStyle: 'solid', borderColor: '#2AA2C130' }}>{copied === d.uid ? 'Copied!' : 'Copy JSON'}</button>
           </div>
         ))}
       </div>

@@ -67,10 +67,13 @@ export function UsersPage() {
         {(users || []).map(u => (
           <div key={u.username} className="flex justify-between items-center p-4 bg-zinc-900 border border-zinc-800 rounded-lg">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-brand/20 flex items-center justify-center text-brand text-sm font-bold">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style={{ backgroundColor: '#2AA2C120', color: '#2AA2C1' }}>
                 {u.username[0]?.toUpperCase()}
               </div>
-              <p className="font-medium text-sm">{u.username}</p>
+              <div>
+                <p className="font-medium text-sm">{u.username}</p>
+                <span style={{ backgroundColor: '#a855f718', color: '#c084fc', borderRadius: 9999, padding: '2px 8px', fontSize: 10, fontWeight: 600, borderWidth: 1, borderStyle: 'solid', borderColor: '#a855f740' }}>admin</span>
+              </div>
             </div>
             <button onClick={() => remove(u.username)} className="p-1.5 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400">
               <Trash2 size={14} />

@@ -98,18 +98,17 @@ export function GatewayPage() {
 
       {/* Services Tab */}
       {tab === 'Services' && <>
-        <button onClick={() => { setForm('service'); setName(''); setJson(JSON.stringify({ loadBalancer: { servers: [{ url: 'http://127.0.0.1:8080' }], healthCheck: { path: '/health', interval: '10s' } } }, null, 2)) }} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14} />Add Service</button>
+        <button onClick={() => { setForm('service'); setName(''); setJson(JSON.stringify({ loadBalancer: { servers: [{ url: 'http://127.0.0.1:8080' }], healthCheck: { path: '/health', interval: '10s' } } }, null, 2)) }} className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all" style={{ backgroundColor: '#a855f715', color: '#a855f7', borderWidth: 1, borderStyle: 'solid', borderColor: '#a855f730' }}><Plus size={14} />Add Service</button>
         {form === 'service' && <AddForm title="New Service" name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={saveService} onCancel={() => setForm(null)} disabled={!name} />}
         <div className="space-y-2">{sArr.map((s: any) => (
           <div key={s.name} className={`p-4 rounded-lg border ${s.provider === 'file' ? 'border-emerald-900/50 bg-emerald-950/20' : 'border-zinc-800 bg-zinc-900'}`}>
             <div className="flex justify-between items-center">
               <div>
                 <p className="font-medium text-sm">{s.name}</p>
-                <div className="flex gap-2 mt-1 text-xs text-zinc-500">
+                <div className="flex gap-2 mt-1 text-xs text-zinc-500 items-center">
                   {s.loadBalancer?.servers && <span>{s.loadBalancer.servers.length} server(s)</span>}
                   {s.loadBalancer?.healthCheck && <span>• health: {s.loadBalancer.healthCheck.path}</span>}
-                  {s.loadBalancer?.passHostHeader !== undefined && <span>• passHost: {String(s.loadBalancer.passHostHeader)}</span>}
-                  <span>• {s.provider}</span>
+                  <span style={{ backgroundColor: '#71717a15', color: '#a1a1aa', borderRadius: 9999, padding: '1px 8px', fontSize: 10, borderWidth: 1, borderStyle: 'solid', borderColor: '#71717a30' }}>{s.provider}</span>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -127,7 +126,7 @@ export function GatewayPage() {
 
       {/* Routes Tab */}
       {tab === 'Routes' && <>
-        <button onClick={() => { setForm('router'); setName(''); setJson(JSON.stringify({ rule: "Host(`app.example.com`)", service: "my-service", entryPoints: ["web"], middlewares: [] }, null, 2)) }} className="flex items-center gap-1 px-3 py-1.5 bg-brand/10 text-brand rounded-lg text-xs font-medium hover:bg-brand/20"><Plus size={14} />Add Route</button>
+        <button onClick={() => { setForm('router'); setName(''); setJson(JSON.stringify({ rule: "Host(`app.example.com`)", service: "my-service", entryPoints: ["web"], middlewares: [] }, null, 2)) }} className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all" style={{ backgroundColor: '#2AA2C115', color: '#2AA2C1', borderWidth: 1, borderStyle: 'solid', borderColor: '#2AA2C130' }}><Plus size={14} />Add Route</button>
         {form === 'router' && <RouterFormFull middlewares={mArr.map((m: any) => m.name.replace(/@.*/, ''))} onSave={async ({name: n, config}: any) => { await api.put(`/config/http/routers/${n}`, config); mutateAll(); setForm(null) }} onCancel={() => setForm(null)} />}
         <div className="space-y-2">{rArr.map((r: any) => (
           <div key={r.name} className={`p-4 rounded-lg border ${r.provider === 'file' ? 'border-emerald-900/50 bg-emerald-950/20' : 'border-zinc-800 bg-zinc-900'}`}>
@@ -135,11 +134,11 @@ export function GatewayPage() {
               <div>
                 <p className="font-medium text-sm">{r.name}</p>
                 <p className="text-xs text-zinc-500 mt-0.5">{r.rule}</p>
-                <div className="flex gap-2 mt-1 text-xs text-zinc-600">
+                <div className="flex gap-2 mt-1 text-xs text-zinc-600 items-center flex-wrap">
                   <span>→ {r.service}</span>
-                  {r.tls && <span className="text-emerald-500">TLS</span>}
-                  {r.middlewares?.length > 0 && <span>MW: {r.middlewares.join(', ')}</span>}
-                  {r.entryPoints && <span>EP: {r.entryPoints.join(', ')}</span>}
+                  {r.tls && <span style={{ backgroundColor: '#10b98118', color: '#34d399', borderRadius: 9999, padding: '1px 8px', fontSize: 10, fontWeight: 600, borderWidth: 1, borderStyle: 'solid', borderColor: '#10b98140' }}>TLS</span>}
+                  {r.middlewares?.length > 0 && <span style={{ backgroundColor: '#f9731618', color: '#fb923c', borderRadius: 9999, padding: '1px 8px', fontSize: 10, borderWidth: 1, borderStyle: 'solid', borderColor: '#f9731640' }}>MW: {r.middlewares.length}</span>}
+                  {r.entryPoints && <span style={{ backgroundColor: '#3b82f618', color: '#60a5fa', borderRadius: 9999, padding: '1px 8px', fontSize: 10, borderWidth: 1, borderStyle: 'solid', borderColor: '#3b82f640' }}>EP: {r.entryPoints.join(', ')}</span>}
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -189,10 +188,9 @@ export function GatewayPage() {
           <div key={m.name} className={`flex justify-between items-center p-4 rounded-lg border ${m.provider === 'file' ? 'border-emerald-900/50 bg-emerald-950/20' : 'border-zinc-800 bg-zinc-900'}`}>
             <div>
               <p className="font-medium text-sm">{m.name}</p>
-              <p className="text-xs text-zinc-500 flex items-center gap-2"><TypeBadge type={m.type} /> <StatusBadge status={m.status} /> <span style={{ fontSize: 10, color: '#52525b' }}>{m.provider}</span></p>
+              <div className="flex items-center gap-2 mt-1"><TypeBadge type={m.type} /><StatusBadge status={m.status} /><span style={{ fontSize: 10, color: '#52525b' }}>{m.provider}</span></div>
             </div>
             <div className="flex items-center gap-2">
-              <TypeBadge type={m.type} />
               {m.provider === 'file' && <>
                 <button onClick={() => setEditing({type:'middlewares', name: m.name.replace(/@.*/,''), data: m})} className="p-1 rounded hover:bg-amber-950 text-zinc-500 hover:text-amber-400" title="Edit"><Save size={14} /></button>
                 <button onClick={() => del('middlewares', m.name)} className="p-1 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400"><Trash2 size={14} /></button>

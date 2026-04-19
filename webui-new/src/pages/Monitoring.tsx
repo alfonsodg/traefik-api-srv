@@ -17,8 +17,8 @@ export function LogsPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3"><Link to="/" className="text-zinc-500 hover:text-white"><ArrowLeft size={20} /></Link><FileText size={24} className="text-brand" /><h1 className="text-2xl font-bold">Logs</h1></div>
         <div className="flex gap-2">
-          <button onClick={() => setLogType('traefik')} className={`px-3 py-1 rounded-lg text-xs font-semibold ${logType === 'traefik' ? 'bg-brand text-white' : 'bg-zinc-800 text-zinc-400'}`}>Traefik</button>
-          <button onClick={() => setLogType('access')} className={`px-3 py-1 rounded-lg text-xs font-semibold ${logType === 'access' ? 'bg-brand text-white' : 'bg-zinc-800 text-zinc-400'}`}>Access</button>
+          <button onClick={() => setLogType('traefik')} className="px-3 py-1 rounded-lg text-xs font-semibold" style={logType === 'traefik' ? { backgroundColor: '#2AA2C1', color: '#fff' } : { backgroundColor: '#27272a', color: '#a1a1aa' }}>Traefik</button>
+          <button onClick={() => setLogType('access')} className="px-3 py-1 rounded-lg text-xs font-semibold" style={logType === 'access' ? { backgroundColor: '#f59e0b', color: '#fff' } : { backgroundColor: '#27272a', color: '#a1a1aa' }}>Access</button>
           <button onClick={() => refresh()} className="px-3 py-1 rounded-lg text-xs bg-zinc-800 text-zinc-400 hover:text-white flex items-center gap-1"><RefreshCw size={12} />Refresh</button>
         </div>
       </div>

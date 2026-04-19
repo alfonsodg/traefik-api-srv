@@ -46,6 +46,8 @@ const SECTIONS = [
   ]},
 ]
 
+const SECTION_COLORS: Record<string, string> = { acme: '#10b981', entrypoints: '#3b82f6', providers: '#a855f7', observability: '#f59e0b', ai: '#06b6d4', mcp: '#f97316' }
+
 export function SettingsPage() {
   const [active, setActive] = useState<string | null>(null)
 
@@ -66,9 +68,9 @@ export function SettingsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {SECTIONS.map(sec => (
-          <button key={sec.id} onClick={() => setActive(sec.id)} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 text-left hover:border-brand/50 transition-colors">
+          <button key={sec.id} onClick={() => setActive(sec.id)} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 text-left hover:border-brand/50 transition-colors" style={{ borderLeftWidth: 4, borderLeftStyle: 'solid', borderLeftColor: SECTION_COLORS[sec.id] || '#71717a' }}>
             <h3 className="font-semibold text-sm mb-1">{sec.title}</h3>
-            <p className="text-xs text-zinc-500">{sec.fields.length} settings</p>
+            <p className="text-xs text-zinc-500"><span style={{ backgroundColor: SECTION_COLORS[sec.id] + '18', color: SECTION_COLORS[sec.id], borderRadius: 9999, padding: '2px 8px', fontSize: 10, fontWeight: 600 }}>{sec.fields.length} settings</span></p>
           </button>
         ))}
       </div>
