@@ -84,3 +84,15 @@ export const btnStyle = (color: string): React.CSSProperties => ({
   borderWidth: 1,
   borderStyle: 'solid',
 })
+
+// Human-readable type names for modal titles
+export const TYPE_LABELS: Record<string, string> = {
+  waf: 'WAF Rule', apikey: 'API Key', jwt: 'JWT Auth', oidc: 'OIDC Provider', hmac: 'HMAC Auth',
+  ratelimit: 'Rate Limiter', httpcache: 'HTTP Cache', inflightreq: 'In-Flight Limiter',
+  aigateway: 'AI Gateway', semanticcache: 'Semantic Cache', piiguard: 'PII Guard',
+  tbac: 'TBAC Rule', mcpaudit: 'Audit Logger', mcppolicy: 'MCP Policy', mcpgovernance: 'MCP Governance',
+  apimock: 'API Mock', router: 'API Route', basicauth: 'Basic Auth',
+}
+export function getTypeLabel(type: string): string {
+  return TYPE_LABELS[type] || type.charAt(0).toUpperCase() + type.slice(1)
+}

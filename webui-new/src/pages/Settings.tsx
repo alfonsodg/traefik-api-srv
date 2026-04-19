@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Settings } from 'lucide-react'
+import { ArrowLeft, Settings, ChevronRight } from 'lucide-react'
 import { StaticConfigForm } from './forms'
+import { Modal } from '@/components/Modal'
 
 const SECTIONS = [
   { id: 'acme', title: 'ACME / Let\'s Encrypt', fields: [
@@ -50,6 +51,7 @@ const SECTION_COLORS: Record<string, string> = { acme: '#10b981', entrypoints: '
 
 export function SettingsPage() {
   const [active, setActive] = useState<string | null>(null)
+  const sec = SECTIONS.find(s => s.id === active)
 
   return (
     <div className="space-y-6">
@@ -60,17 +62,20 @@ export function SettingsPage() {
       </div>
       <p className="text-sm text-zinc-500">Configure static settings. Changes require a reload to take effect.</p>
 
-      {active && (() => {
-        const sec = SECTIONS.find(s => s.id === active)
-        if (!sec) return null
-        return <StaticConfigForm section={sec.id} title={sec.title} fields={sec.fields} onDone={() => setActive(null)} />
-      })()}
+      {sec && (
+        <Modal open={true} onClose={() => setActive(null)} color={SECTION_COLORS[sec.id]}>
+          <StaticConfigForm section={sec.id} title={sec.title} fields={sec.fields} onDone={() => setActive(null)} />
+        </Modal>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {SECTIONS.map(sec => (
-          <button key={sec.id} onClick={() => setActive(sec.id)} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 text-left hover:border-brand/50 transition-colors" style={{ borderLeftWidth: 4, borderLeftStyle: 'solid', borderLeftColor: SECTION_COLORS[sec.id] || '#71717a' }}>
-            <h3 className="font-semibold text-sm mb-1">{sec.title}</h3>
-            <p className="text-xs text-zinc-500"><span style={{ backgroundColor: SECTION_COLORS[sec.id] + '18', color: SECTION_COLORS[sec.id], borderRadius: 9999, padding: '2px 8px', fontSize: 10, fontWeight: 600 }}>{sec.fields.length} settings</span></p>
+        {SECTIONS.map(s => (
+          <button key={s.id} onClick={() => setActive(s.id)} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 text-left group transition-all hover:border-zinc-600 hover:shadow-lg cursor-pointer" style={{ borderLeftWidth: 4, borderLeftStyle: 'solid', borderLeftColor: SECTION_COLORS[s.id] || '#71717a' }}>
+            <div className="flex justify-between items-center">
+              <h3 className="font-semibold text-sm">{s.title}</h3>
+              <ChevronRight size={16} className="text-zinc-600 group-hover:text-zinc-300 transition-colors" />
+            </div>
+            <p className="text-xs mt-2"><span style={{ backgroundColor: SECTION_COLORS[s.id] + '18', color: SECTION_COLORS[s.id], borderRadius: 9999, padding: '2px 8px', fontSize: 10, fontWeight: 600 }}>{s.fields.length} settings</span></p>
           </button>
         ))}
       </div>
