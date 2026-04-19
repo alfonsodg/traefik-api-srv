@@ -1,5 +1,8 @@
 <p align="center"><img src="docs/assets/logo-light.svg" alt="Traefik-XPX" width="400"></p>
 
+[![Test, Build & Deploy](https://github.com/ccvass/traefik-xpx/actions/workflows/release.yml/badge.svg)](https://github.com/ccvass/traefik-xpx/actions/workflows/release.yml)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 # Traefik-XPX
 
 **The open-source API Gateway that replaces 5 commercial Traefik products in one.**
