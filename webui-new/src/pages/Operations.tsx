@@ -42,7 +42,7 @@ export function ClustersPage() {
           <div className="flex gap-2 justify-end"><button onClick={() => setShow(false)} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800"><X size={12} className="inline mr-1" />Cancel</button><button onClick={add} disabled={!name||!url} className="px-3 py-1.5 text-xs rounded-lg text-white font-semibold disabled:opacity-40" style={{ backgroundColor: '#2AA2C1' }}><Save size={12} className="inline mr-1" />Add</button></div>
       </Modal>}
 
-      <div className="bg-zinc-900 border border-emerald-900/50 rounded-xl p-6">
+      <div className="glass p-6">
         <div className="flex justify-between items-center mb-4">
           <div><p className="font-bold text-lg">Current Instance</p><p className="text-sm text-zinc-500">{(version as any)?.Version || 'dev'}</p></div>
           <span className="flex items-center gap-1.5 text-sm font-semibold" style={{ color: '#34d399' }}><span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#34d399', display: 'inline-block' }} /> Healthy</span>
@@ -55,7 +55,7 @@ export function ClustersPage() {
       </div>
 
       {instances.map((inst: any, i: number) => (
-        <div key={i} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 flex justify-between items-center">
+        <div key={i} className="glass p-5 flex justify-between items-center">
           <div><p className="font-semibold">{inst.name}</p><p className="text-sm text-zinc-500">{inst.url} {inst.region && `• ${inst.region}`}</p></div>
           <div className="flex items-center gap-3"><StatusBadge status="enabled" /><button onClick={() => remove(i)} className="p-2 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400"><Trash2 size={16} /></button></div>
         </div>
@@ -81,7 +81,7 @@ export function GrafanaPage() {
       <p className="text-sm text-zinc-500">Copy JSON and import into Grafana.</p>
       <div className="space-y-4">
         {Array.isArray(dashboards) && dashboards.map((d: any) => (
-          <div key={d.uid} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 flex justify-between items-center">
+          <div key={d.uid} className="glass p-5 flex justify-between items-center">
             <div><p className="font-semibold">{d.title}</p><p className="text-sm text-zinc-500">{d.description}</p><p className="text-xs mt-1 flex items-center gap-2"><span style={{ color: '#71717a' }}>{d.panels?.length || 0} panels</span><span style={{ backgroundColor: '#2AA2C118', color: '#2AA2C1', borderRadius: 9999, padding: '2px 8px', fontSize: 10, fontWeight: 600 }}>{d.uid}</span></p></div>
             <button onClick={() => copy(d)} className="px-4 py-2 rounded-lg text-sm font-semibold" style={copied === d.uid ? { backgroundColor: '#10b981', color: '#fff' } : { backgroundColor: '#2AA2C115', color: '#2AA2C1', borderWidth: 1, borderStyle: 'solid', borderColor: '#2AA2C130' }}>{copied === d.uid ? 'Copied!' : 'Copy JSON'}</button>
           </div>
@@ -117,7 +117,7 @@ export function ProxyPage() {
           {Array.isArray(data) && data.length > 0 ? (
             <div className="space-y-2">
               {data.map((item: any) => (
-                <div key={item.name} className={`flex justify-between items-center p-4 rounded-lg border ${item.provider === 'file' ? 'border-emerald-900/50 bg-emerald-950/20' : 'border-zinc-800 bg-zinc-900'}`}>
+                <div key={item.name} className={`flex justify-between items-center p-4 rounded-lg border ${item.provider === 'file' ? 'glass' : 'glass'}`}>
                   <div><p className="font-medium text-sm">{item.name}</p><p className="text-xs text-zinc-500">{item.rule || item.type || item.status}</p></div>
                   <div className="flex items-center gap-2">
                     <StatusBadge status={item.status} />

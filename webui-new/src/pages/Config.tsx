@@ -111,7 +111,7 @@ function OpsTab() {
   const [st, setSt] = useState('')
   return (
     <div className="space-y-4">
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-4">
+      <div className="glass p-6 space-y-4">
         <h3 className="font-semibold">System Operations</h3>
         <div className="flex gap-3">
           <button onClick={async () => { await api.post('/reload'); setSt('Reload triggered'); setTimeout(() => setSt(''), 3000) }} className="px-4 py-2 bg-brand hover:bg-brand/80 text-white font-semibold rounded-lg text-sm">Reload Config</button>

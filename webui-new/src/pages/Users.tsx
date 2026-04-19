@@ -64,7 +64,7 @@ export function UsersPage() {
 
       <div className="space-y-2">
         {(users || []).map(u => (
-          <div key={u.username} className="flex justify-between items-center p-4 bg-zinc-900 border border-zinc-800 rounded-lg">
+          <div key={u.username} className="flex justify-between items-center p-4 glass">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style={{ backgroundColor: '#2AA2C120', color: '#2AA2C1' }}>
                 {u.username[0]?.toUpperCase()}

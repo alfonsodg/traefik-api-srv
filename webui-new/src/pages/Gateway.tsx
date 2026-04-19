@@ -102,7 +102,7 @@ export function GatewayPage() {
         <button onClick={() => { setForm('service'); setName(''); setJson(JSON.stringify({ loadBalancer: { servers: [{ url: 'http://127.0.0.1:8080' }], healthCheck: { path: '/health', interval: '10s' } } }, null, 2)) }} className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all" style={{ backgroundColor: '#a855f715', color: '#a855f7', borderWidth: 1, borderStyle: 'solid', borderColor: '#a855f730' }}><Plus size={14} />Add Service</button>
         {form === 'service' && <AddForm title="New Service" name={name} setName={setName} json={json} setJson={setJson} color="#a855f7" onSave={saveService} onCancel={() => setForm(null)} disabled={!name} />}
         <div className="space-y-2">{sArr.map((s: any) => (
-          <div key={s.name} className={`p-4 rounded-lg border ${s.provider === 'file' ? 'border-emerald-900/50 bg-emerald-950/20' : 'border-zinc-800 bg-zinc-900'}`}>
+          <div key={s.name} className={`p-4 rounded-lg border ${s.provider === 'file' ? 'glass' : 'glass'}`}>
             <div className="flex justify-between items-center">
               <div>
                 <p className="font-medium text-sm">{s.name}</p>
@@ -130,7 +130,7 @@ export function GatewayPage() {
         <button onClick={() => { setForm('router'); setName(''); setJson(JSON.stringify({ rule: "Host(`app.example.com`)", service: "my-service", entryPoints: ["web"], middlewares: [] }, null, 2)) }} className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all" style={{ backgroundColor: '#2AA2C115', color: '#2AA2C1', borderWidth: 1, borderStyle: 'solid', borderColor: '#2AA2C130' }}><Plus size={14} />Add Route</button>
         {form === 'router' && <Modal open={true} onClose={() => setForm(null)} color="#2AA2C1"><RouterFormFull middlewares={mArr.map((m: any) => m.name.replace(/@.*/, ''))} onSave={async ({name: n, config}: any) => { await api.put(`/config/http/routers/${n}`, config); mutateAll(); setForm(null) }} onCancel={() => setForm(null)} /></Modal>}
         <div className="space-y-2">{rArr.map((r: any) => (
-          <div key={r.name} className={`p-4 rounded-lg border ${r.provider === 'file' ? 'border-emerald-900/50 bg-emerald-950/20' : 'border-zinc-800 bg-zinc-900'}`}>
+          <div key={r.name} className={`p-4 rounded-lg border ${r.provider === 'file' ? 'glass' : 'glass'}`}>
             <div className="flex justify-between items-center">
               <div>
                 <p className="font-medium text-sm">{r.name}</p>
@@ -186,7 +186,7 @@ export function GatewayPage() {
           <AddForm title={`New ${ALL_MW_TYPES[mwType]?.label || mwType}`} name={name} setName={setName} json={json} setJson={setJson} color="emerald" onSave={saveMw} onCancel={() => setForm(null)} disabled={!name} />
         </>}
         <div className="space-y-2">{mArr.map((m: any) => (
-          <div key={m.name} className={`flex justify-between items-center p-4 rounded-lg border ${m.provider === 'file' ? 'border-emerald-900/50 bg-emerald-950/20' : 'border-zinc-800 bg-zinc-900'}`}>
+          <div key={m.name} className={`flex justify-between items-center p-4 rounded-lg border ${m.provider === 'file' ? 'glass' : 'glass'}`}>
             <div>
               <p className="font-medium text-sm">{m.name}</p>
               <div className="flex items-center gap-2 mt-1"><TypeBadge type={m.type} /><StatusBadge status={m.status} /><span style={{ fontSize: 10, color: '#52525b' }}>{m.provider}</span></div>
@@ -213,7 +213,7 @@ export function GatewayPage() {
         {Array.isArray(certs) && certs.length > 0 && <div className="space-y-2">
           <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">Certificates</h3>
           {certs.map((cert: any, i: number) => (
-            <div key={i} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
+            <div key={i} className="glass p-4">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-medium text-sm">{cert.sans?.join(', ') || cert.domain?.main || 'Unknown'}</p>
@@ -231,7 +231,7 @@ export function GatewayPage() {
           <p className="text-zinc-400 text-sm">No certificates loaded</p>
           <p className="text-zinc-600 text-xs mt-1">Configure ACME (Let's Encrypt) in traefik.yml or add TLS certs via file provider</p>
         </div>}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+        <div className="glass p-5">
           <h3 className="font-semibold text-sm mb-2">TLS Routes</h3>
           <div className="space-y-2">
             {rArr.filter((r: any) => r.tls).map((r: any) => (
@@ -248,7 +248,7 @@ export function GatewayPage() {
       {/* Entrypoints Tab */}
       {tab === 'Entrypoints' && <div className="space-y-3">
         {epArr.map((ep: any) => (
-          <div key={ep.name} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+          <div key={ep.name} className="glass p-5">
             <div className="flex justify-between items-center mb-3">
               <div className="flex items-center gap-3">
                 <Activity size={18} className="text-brand" />
@@ -272,7 +272,7 @@ export function GatewayPage() {
       {/* Providers Tab */}
       {tab === 'Providers' && <div className="space-y-3">
         {ov?.providers && Object.entries(ov.providers).filter(([, v]) => v).map(([k]) => (
-          <div key={k} className="bg-zinc-900 border border-emerald-900/50 rounded-xl p-5 flex items-center gap-4">
+          <div key={k} className="glass p-5 flex items-center gap-4">
             <div className="p-3 rounded-lg bg-emerald-500/10"><Eye size={20} className="text-emerald-400" /></div>
             <div>
               <p className="font-bold capitalize">{k}</p>
@@ -281,7 +281,7 @@ export function GatewayPage() {
             <span className="ml-auto flex items-center gap-1.5 text-xs font-semibold" style={{ color: '#34d399' }}><span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#34d399', display: 'inline-block' }} /> Connected</span>
           </div>
         ))}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+        <div className="glass p-5">
           <h3 className="font-semibold text-sm mb-2">Available Providers</h3>
           <p className="text-xs text-zinc-500">Docker, Swarm, Kubernetes, Consul, etcd, ZooKeeper, Redis, File, HTTP, ECS, Nomad</p>
           <p className="text-xs text-zinc-600 mt-2">Configure providers in the static config (traefik.yml)</p>

@@ -23,7 +23,7 @@ export function LogsPage() {
         </div>
       </div>
       <div className="text-xs text-zinc-500">{(data as any)?.total || 0} total lines • showing last {logs.length} • auto-refresh 5s</div>
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 max-h-[70vh] overflow-y-auto">
+      <div className="glass p-4 max-h-[70vh] overflow-y-auto">
         <pre className="text-[11px] font-mono text-zinc-400 whitespace-pre-wrap break-all leading-5">
           {logs.length ? logs.join('\n') : 'No logs available. Check log file path in Settings.'}
         </pre>
@@ -48,7 +48,7 @@ export function MetricsPage() {
         {Object.entries(m).map(([k, v], i) => {
           const colors = ['#2AA2C1', '#a855f7', '#f59e0b', '#10b981', '#3b82f6', '#06b6d4', '#ef4444', '#f97316']
           return (
-          <div key={k} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5" style={{ borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: colors[i % colors.length] }}>
+          <div key={k} className="glass p-5" style={{ borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: colors[i % colors.length] }}>
             <p className="text-3xl font-bold">{v}</p>
             <p style={{ fontSize: 10, color: '#71717a', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{k.replace(/([A-Z])/g, ' $1').trim()}</p>
           </div>
@@ -56,7 +56,7 @@ export function MetricsPage() {
       </div>
 
       {ov?.features && (
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+        <div className="glass p-5">
           <h3 className="font-semibold text-sm mb-3">Feature Status</h3>
           <div className="grid grid-cols-3 gap-3">
             {Object.entries(ov.features).map(([k, v]) => (
@@ -70,7 +70,7 @@ export function MetricsPage() {
       )}
 
       {ov?.providers && (
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+        <div className="glass p-5">
           <h3 className="font-semibold text-sm mb-3">Active Providers</h3>
           <div className="flex gap-3">
             {Object.entries(ov.providers).filter(([, v]) => v).map(([k]) => (
@@ -96,15 +96,15 @@ export function HealthPage() {
       <p className="text-xs text-zinc-500">{svcs.length} services • auto-refresh 5s</p>
 
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5" style={{ borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: '#34d399' }}>
+        <div className="glass p-5" style={{ borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: '#34d399' }}>
           <p className="text-3xl font-bold" style={{ color: '#34d399' }}>{svcs.filter((s: any) => s.status === 'enabled').length}</p>
           <p style={{ fontSize: 10, color: '#71717a', marginTop: 4, textTransform: 'uppercase' }}>Healthy</p>
         </div>
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5" style={{ borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: '#fbbf24' }}>
+        <div className="glass p-5" style={{ borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: '#fbbf24' }}>
           <p className="text-3xl font-bold" style={{ color: '#fbbf24' }}>{svcs.filter((s: any) => s.status === 'warning').length}</p>
           <p style={{ fontSize: 10, color: '#71717a', marginTop: 4, textTransform: 'uppercase' }}>Warning</p>
         </div>
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5" style={{ borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: '#f87171' }}>
+        <div className="glass p-5" style={{ borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: '#f87171' }}>
           <p className="text-3xl font-bold" style={{ color: '#f87171' }}>{svcs.filter((s: any) => s.status === 'disabled').length}</p>
           <p style={{ fontSize: 10, color: '#71717a', marginTop: 4, textTransform: 'uppercase' }}>Unhealthy</p>
         </div>
@@ -112,7 +112,7 @@ export function HealthPage() {
 
       <div className="space-y-2">
         {svcs.map((s: any) => (
-          <div key={s.name} className={`flex justify-between items-center p-4 rounded-lg border ${s.status === 'enabled' ? 'border-emerald-900/50 bg-emerald-950/10' : 'border-red-900/50 bg-red-950/10'}`}>
+          <div key={s.name} className={`flex justify-between items-center p-4 rounded-lg border ${s.status === 'enabled' ? 'glass' : 'glass'}`}>
             <div className="flex items-center gap-3">
               <div style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: s.status === 'enabled' ? '#34d399' : '#f87171' }} />
               <div>
