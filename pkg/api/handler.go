@@ -66,12 +66,7 @@ type Handler struct {
 // NewBuilder returns a http.Handler builder based on runtime.Configuration.
 func NewBuilder(staticConfig static.Configuration, tlsManager *tls.Manager) func(*runtime.Configuration) http.Handler {
 	return func(configuration *runtime.Configuration) http.Handler {
-		h := New(staticConfig, configuration).WithTLSManager(tlsManager)
-		router := h.createRouter()
-		if staticConfig.API != nil && staticConfig.API.AuthUser != "" && staticConfig.API.AuthPassword != "" {
-			return h.authWrapAll(router)
-		}
-		return router
+		return New(staticConfig, configuration).WithTLSManager(tlsManager).createRouter()
 	}
 }
 
