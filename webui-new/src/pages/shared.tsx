@@ -1,7 +1,7 @@
 import { Trash2, Save, X } from 'lucide-react'
 import { TypeBadge, StatusBadge } from '@/components/Badge'
 import { Modal } from '@/components/Modal'
-import { statAccent, editableAccent, btnStyle, COLORS } from '@/lib/design'
+import { statAccent, editableAccent, btnStyle, glassCard, COLORS } from '@/lib/design'
 import { mutate } from 'swr'
 
 function mutateAll() { mutate('/http/routers'); mutate('/http/services'); mutate('/http/middlewares') }
@@ -34,7 +34,7 @@ function AddForm({ title, name, setName, json, setJson, color, onSave, onCancel,
 function Item({ name, type, status, provider, onDelete }: { name: string; type?: string; status?: string; provider?: string; onDelete: () => void }) {
   const editable = provider === 'file'
   return (
-    <div className="flex justify-between items-center p-4 rounded-lg border border-zinc-800 bg-zinc-900" style={editable ? editableAccent() : {}}>
+    <div className="flex justify-between items-center p-4" style={{ ...glassCard, borderRadius: 12, ...(editable ? editableAccent() : {}) }}>
       <div>
         <p className="font-medium text-sm text-zinc-200">{name}</p>
         <div className="flex items-center gap-2 mt-1.5">
@@ -53,8 +53,8 @@ function Item({ name, type, status, provider, onDelete }: { name: string; type?:
 
 function Stat({ value, label, color }: { value: number | string; label: string; color?: string }) {
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5" style={color ? statAccent(color) : {}}>
-      <p className="text-3xl font-bold text-zinc-100">{value}</p>
+    <div style={{ ...glassCard, padding: 20, ...(color ? statAccent(color) : {}) }}>
+      <p style={{ fontSize: 28, fontWeight: 800, color: color || '#e4e4e7', textShadow: color ? `0 0 20px ${color}40` : 'none' }}>{value}</p>
       <p style={{ fontSize: 10, color: '#71717a', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</p>
     </div>
   )
@@ -62,7 +62,7 @@ function Stat({ value, label, color }: { value: number | string; label: string; 
 
 function ActionBtn({ label, onClick, color }: { label: string; onClick: () => void; color: string }) {
   return (
-    <button onClick={onClick} className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all" style={btnStyle(color)}>
+    <button onClick={onClick} className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all hover:scale-105" style={btnStyle(color)}>
       <span style={{ fontSize: 14, lineHeight: 1 }}>+</span> {label}
     </button>
   )

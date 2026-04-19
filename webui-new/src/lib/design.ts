@@ -63,6 +63,8 @@ export const badgeStyle = (colors: { bg: string; text: string; border: string })
   fontWeight: 600,
   display: 'inline-block',
   lineHeight: '16px',
+  backdropFilter: 'blur(4px)',
+  boxShadow: `0 2px 8px ${colors.bg}`,
 })
 
 export const dotStyle = (color: string): React.CSSProperties => ({
@@ -71,19 +73,40 @@ export const dotStyle = (color: string): React.CSSProperties => ({
 
 export const statAccent = (color: string): React.CSSProperties => ({
   borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: color,
+  background: `linear-gradient(135deg, ${color}08 0%, #18181b 100%)`,
+  boxShadow: `0 4px 24px ${color}10`,
 })
 
 export const editableAccent = (color: string = '#10b981'): React.CSSProperties => ({
   borderLeftWidth: 4, borderLeftStyle: 'solid', borderLeftColor: color,
+  background: `linear-gradient(135deg, ${color}06 0%, #18181b 100%)`,
 })
 
 export const btnStyle = (color: string): React.CSSProperties => ({
-  backgroundColor: color + '15',
+  background: `linear-gradient(135deg, ${color}25 0%, ${color}10 100%)`,
   color: color,
-  borderColor: color + '30',
+  borderColor: color + '40',
   borderWidth: 1,
   borderStyle: 'solid',
+  boxShadow: `0 2px 12px ${color}15`,
 })
+
+// Glass card base
+export const glassCard: React.CSSProperties = {
+  background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)',
+  backdropFilter: 'blur(12px)',
+  borderWidth: 1,
+  borderStyle: 'solid',
+  borderColor: 'rgba(255,255,255,0.06)',
+  borderRadius: 16,
+  boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+}
+
+export const glassCardHover: React.CSSProperties = {
+  ...glassCard,
+  borderColor: 'rgba(255,255,255,0.12)',
+  boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)',
+}
 
 // Human-readable type names for modal titles
 export const TYPE_LABELS: Record<string, string> = {
