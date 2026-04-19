@@ -183,3 +183,38 @@ docker service update traefik-xp --rollback
 # Or revert to specific image
 docker service update traefik-xp --image traefik:2.10.4
 ```
+
+## Dashboard Usage
+
+Access the dashboard at `https://your-domain/dashboard/` or `http://host:8099/dashboard/`.
+
+Login with the credentials configured in `authUser`/`authPassword`.
+
+### Features available from the dashboard
+
+| Page | What you can do |
+|------|----------------|
+| Dashboard | View all routers, services, middlewares in tables. Search, filter, paginate. Click any row for detail with flow diagram. Edit/delete @file items. |
+| API Gateway | Manage HTTP/TCP/UDP routers, services, middlewares. Middleware Wizard. Upload TLS certificates. |
+| Security | Create WAF rules (Coraza/ModSecurity), API Key auth, JWT, OIDC, HMAC middlewares. |
+| Distributed | Create Rate Limiters, HTTP Cache, In-Flight limiters. |
+| AI Gateway | Create AI Gateway, Semantic Cache, PII Guard middlewares. |
+| MCP Gateway | Create TBAC rules, Audit Loggers, Policy engines. |
+| API Management | Create managed API routes and Mock endpoints. |
+| Logs | View Traefik and access logs in real-time. |
+| Metrics | View internal metrics, feature status, active providers. |
+| Health | Monitor service health with status dots. |
+| Multi-Cluster | Register remote Traefik-XP nodes. |
+| Grafana | Copy pre-built Grafana dashboard JSON. |
+| Users | Create/delete dashboard users (bcrypt hashed). |
+| Settings | Configure ACME, entrypoints, providers, observability, AI, MCP. |
+
+### Creating resources
+
+Every creation form includes:
+- Contextual tooltip explaining what the resource does
+- Field-by-field help with examples
+- Pre-filled JSON template with common defaults
+- Colored modal matching the resource category
+
+Resources created from the dashboard are saved to the file provider and apply immediately without restart.

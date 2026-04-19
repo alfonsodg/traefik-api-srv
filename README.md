@@ -24,8 +24,8 @@ Traefik-XP combines Traefik Proxy + Hub API Gateway + Hub API Management + AI Ga
 - **MCP Gateway**: Tool-Based Access Control, policy engine, audit logging
 - **Security**: WAF, JWT, OIDC, LDAP, API Key, HMAC, OPA
 - **Distributed**: Rate limiting, HTTP cache, in-flight limits (Valkey-backed)
-- **Dashboard**: Dark theme React UI with full CRUD, logs, metrics, health checks
-- **Auth**: Login page, JWT sessions, user management, Valkey-backed HA
+- **Dashboard**: Dark theme React UI with router/service/middleware tables, flow diagrams, search, CRUD, tooltips
+- **Auth**: JWT login with bcrypt passwords, user management, Valkey-backed HA
 - **Operations**: Backup/restore, auto-reload, multi-cluster, Grafana dashboards
 
 ## Quick Start
