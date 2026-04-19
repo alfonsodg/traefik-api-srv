@@ -4,6 +4,63 @@
 
 ## Docker Swarm (Production)
 
+### Example Stack
+
+```yaml
+version: '3.8'
+
+services:
+  traefik-xpx:
+    image: ghcr.io/ccvass/traefik-xpx:latest
+    command: --configFile=/etc/traefik/traefik.yml
+    user: "0:0"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8099:8099"
+    networks:
+      - traefik-public
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /mnt/traefik/certs:/certificates
+      - /mnt/traefik/fileprovider:/fileprovider
+      - /mnt/traefik/logs:/var/log
+      - /mnt/traefik/traefik.yml:/etc/traefik/traefik.yml
+      - /mnt/traefik/users.json:/etc/traefik/users.json
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      CF_API_EMAIL: your-email@example.com
+      CF_API_KEY: your-cloudflare-api-key
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+      labels:
+        traefik.enable: "true"
+        traefik.http.routers.dashboard.rule: "Host(`traefik.example.com`)"
+        traefik.http.routers.dashboard.service: "api@internal"
+        traefik.http.routers.dashboard.tls: "true"
+        traefik.http.routers.dashboard.tls.certresolver: "le"
+        traefik.http.services.dashboard.loadbalancer.server.port: "8099"
+
+networks:
+  traefik-public:
+    external: true
+```
+
+Deploy:
+
+```bash
+docker stack deploy -c traefik-xpx-stack.yml traefik
+```
+
 ### 1. Generate bcrypt password hash
 
 ```bash
