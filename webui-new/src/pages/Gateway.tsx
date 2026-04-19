@@ -5,7 +5,7 @@ import { fetcher, api } from '@/lib/api'
 import { ArrowLeft, Plus, Trash2, Save, X, Activity, Shield, Zap, Globe, Lock, Eye } from 'lucide-react'
 import { AddForm, Item, Stat, mutateAll } from './shared'
 import { EditForm, RouterFormFull, CertUploadForm } from './forms'
-import { StatusBadge as SB, TypeBadge as TB, StatusDot } from '@/components/Badge'
+import { StatusBadge, TypeBadge, StatusDot } from '@/components/Badge'
 import { COLORS, statAccent, editableAccent } from '@/lib/design'
 import { MiddlewareWizard } from '@/components/MiddlewareWizard'
 

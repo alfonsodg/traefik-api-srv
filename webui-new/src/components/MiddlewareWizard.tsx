@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Save, X, Eye } from 'lucide-react'
-import { Badge as TypeBadge, StatusBadge, getTypeColor } from '@/components/Badge'
+import { TypeBadge, StatusBadge, getTypeColor } from '@/components/Badge'
 import { api } from '@/lib/api'
 import { mutate } from 'swr'
 
