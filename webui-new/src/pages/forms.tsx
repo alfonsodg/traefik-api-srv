@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Save, X } from 'lucide-react'
+import { DndMiddlewareAssign } from '@/components/DndMiddleware'
 import { api } from '@/lib/api'
 import { mutate } from 'swr'
 
@@ -31,8 +32,7 @@ export function RouterFormFull({ middlewares, onSave, onCancel }: { middlewares:
   const [tls, setTls] = useState(false)
   const [certResolver, setCertResolver] = useState('')
 
-  const toggleMw = (mw: string) => setSelectedMw(prev => prev.includes(mw) ? prev.filter(m => m !== mw) : [...prev, mw])
-
+  
   const save = () => {
     const cfg: Record<string, unknown> = {
       rule, service,
@@ -59,15 +59,7 @@ export function RouterFormFull({ middlewares, onSave, onCancel }: { middlewares:
         <input type="checkbox" checked={tls} onChange={e => setTls(e.target.checked)} id="tls-check" className="rounded" />
         <label htmlFor="tls-check" className="text-xs text-zinc-400">Enable TLS</label>
       </div>
-      {middlewares.length > 0 && <div>
-        <label className="text-xs text-zinc-500">Middlewares (click to assign)</label>
-        <div className="flex gap-1 flex-wrap mt-1">
-          {middlewares.map(mw => (
-            <button key={mw} onClick={() => toggleMw(mw)} className={`px-2 py-1 rounded text-[10px] transition-colors ${selectedMw.includes(mw) ? 'bg-brand text-white' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'}`}>{mw}</button>
-          ))}
-        </div>
-        {selectedMw.length > 0 && <p className="text-[10px] text-brand mt-1">Selected: {selectedMw.join(', ')}</p>}
-      </div>}
+      {middlewares.length > 0 && <DndMiddlewareAssign available={middlewares} assigned={selectedMw} onChange={setSelectedMw} />}
       <div className="flex gap-2 justify-end">
         <button onClick={onCancel} className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800 hover:bg-zinc-700 flex items-center gap-1"><X size={12} />Cancel</button>
         <button onClick={save} disabled={!name || !rule || !service} className="px-3 py-1.5 text-xs rounded-lg bg-brand hover:bg-brand/80 text-white font-semibold disabled:opacity-30 flex items-center gap-1"><Save size={12} />Create</button>
