@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import useSWR from 'swr'
 import { fetcher, api } from '@/lib/api'
 import { ArrowLeft, Plus } from 'lucide-react'
+import { Badge as TypeBadge, StatusBadge, getTypeColor } from '@/components/Badge'
 import type { Middleware } from '@/types/api'
 import { AddForm, Item, Stat, mutateAll } from './shared'
 

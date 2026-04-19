@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import useSWR from 'swr'
 import { fetcher } from '@/lib/api'
 import { ArrowLeft, Activity, Heart, BarChart3, FileText, RefreshCw } from 'lucide-react'
+import { Badge as TypeBadge, StatusBadge, getTypeColor } from '@/components/Badge'
 
 // #182 — Logs viewer
 export function LogsPage() {

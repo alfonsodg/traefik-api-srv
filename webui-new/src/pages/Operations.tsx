@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import useSWR from 'swr'
 import { fetcher, api } from '@/lib/api'
 import { ArrowLeft, Plus, Trash2, Save, X } from 'lucide-react'
+import { Badge as TypeBadge, StatusBadge, getTypeColor } from '@/components/Badge'
 
 export function ClustersPage() {
   const { data: overview } = useSWR('/overview', fetcher)
@@ -119,7 +120,7 @@ export function ProxyPage() {
                 <div key={item.name} className={`flex justify-between items-center p-4 rounded-lg border ${item.provider === 'file' ? 'border-emerald-900/50 bg-emerald-950/20' : 'border-zinc-800 bg-zinc-900'}`}>
                   <div><p className="font-medium text-sm">{item.name}</p><p className="text-xs text-zinc-500">{item.rule || item.type || item.status}</p></div>
                   <div className="flex items-center gap-2">
-                    <span className={`text-[10px] px-2.5 py-1 rounded-full font-semibold border ${item.status === 'enabled' ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/25' : 'bg-red-500/15 text-red-400 border-red-500/25'}`}>{item.status}</span>
+                    <StatusBadge status={item.status} />
                     <span className="text-[10px] text-zinc-600">{item.provider}</span>
                   </div>
                 </div>
