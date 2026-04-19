@@ -83,12 +83,12 @@ export function GatewayPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 lg:grid-cols-6 gap-3">
-        <Stat value={rArr.length} label="Routes" />
-        <Stat value={sArr.length} label="Services" />
-        <Stat value={mArr.length} label="Middlewares" />
-        <Stat value={epArr.length} label="Entrypoints" />
-        <Stat value={rArr.filter((r: any) => r.status === 'enabled').length} label="Healthy" />
-        <Stat value={(ov?.http?.routers?.errors || 0) + (ov?.http?.services?.errors || 0)} label="Errors" />
+        <Stat value={rArr.length} label="Routes" color={COLORS.brand} />
+        <Stat value={sArr.length} label="Services" color={COLORS.identity.accent} />
+        <Stat value={mArr.length} label="Middlewares" color={COLORS.network.accent} />
+        <Stat value={epArr.length} label="Entrypoints" color={COLORS.traffic.accent} />
+        <Stat value={rArr.filter((r: any) => r.status === 'enabled').length} label="Healthy" color={COLORS.ok.accent} />
+        <Stat value={(ov?.http?.routers?.errors || 0) + (ov?.http?.services?.errors || 0)} label="Errors" color={COLORS.error.accent} />
       </div>
 
       {/* Tabs */}
@@ -189,7 +189,7 @@ export function GatewayPage() {
           <div key={m.name} className={`flex justify-between items-center p-4 rounded-lg border ${m.provider === 'file' ? 'border-emerald-900/50 bg-emerald-950/20' : 'border-zinc-800 bg-zinc-900'}`}>
             <div>
               <p className="font-medium text-sm">{m.name}</p>
-              <p className="text-xs text-zinc-500">{m.type} • {m.status} • {m.provider}</p>
+              <p className="text-xs text-zinc-500 flex items-center gap-2"><TypeBadge type={m.type} /> <StatusBadge status={m.status} /> <span style={{ fontSize: 10, color: '#52525b' }}>{m.provider}</span></p>
             </div>
             <div className="flex items-center gap-2">
               <TypeBadge type={m.type} />
@@ -206,10 +206,10 @@ export function GatewayPage() {
       {/* TLS Tab */}
       {tab === 'TLS & Certs' && <div className="space-y-4">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <Stat value={Array.isArray(certs) ? certs.length : 0} label="Certificates" />
-          <Stat value={rArr.filter((r: any) => r.tls).length} label="TLS Routes" />
-          <Stat value={ov?.features?.acme ? 'Active' : 'Off'} label="ACME" />
-          <Stat value={rArr.filter((r: any) => r.tls?.certResolver).length} label="Auto-Managed" />
+          <Stat value={Array.isArray(certs) ? certs.length : 0} label="Certificates" color={COLORS.network.accent} />
+          <Stat value={rArr.filter((r: any) => r.tls).length} label="TLS Routes" color={COLORS.identity.accent} />
+          <Stat value={ov?.features?.acme ? 'Active' : 'Off'} label="ACME" color={COLORS.ok.accent} />
+          <Stat value={rArr.filter((r: any) => r.tls?.certResolver).length} label="Auto-Managed" color={COLORS.traffic.accent} />
         </div>
         {Array.isArray(certs) && certs.length > 0 && <div className="space-y-2">
           <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">Certificates</h3>
@@ -258,7 +258,7 @@ export function GatewayPage() {
                   <p className="text-lg font-mono text-zinc-300">{ep.address}</p>
                 </div>
               </div>
-              <span className="text-emerald-400 text-xs font-semibold">● Listening</span>
+              <span className="flex items-center gap-1.5 text-xs font-semibold" style={{ color: '#34d399' }}><span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#34d399', display: 'inline-block' }} /> Listening</span>
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
               <div className="bg-zinc-800 rounded p-2"><span className="text-zinc-500">Read Timeout</span><p className="font-mono">{ep.transport?.respondingTimeouts?.readTimeout || 'default'}</p></div>
@@ -279,7 +279,7 @@ export function GatewayPage() {
               <p className="font-bold capitalize">{k}</p>
               <p className="text-xs text-zinc-500">Active • Auto-discovering services</p>
             </div>
-            <span className="ml-auto text-emerald-400 text-xs font-semibold">● Connected</span>
+            <span className="ml-auto flex items-center gap-1.5 text-xs font-semibold" style={{ color: '#34d399' }}><span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#34d399', display: 'inline-block' }} /> Connected</span>
           </div>
         ))}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">

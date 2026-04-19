@@ -41,9 +41,9 @@ export function SecurityPage() {
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         <Stat value={all.filter(m=>m.type==='waf').length} label="WAF Rules" color="#ef4444" />
         <Stat value={all.filter(m=>m.type==='apikey').length} label="API Keys" color="#f59e0b" />
-        <Stat value={all.filter(m=>['jwt','jwtAuth'].includes(m.type)).length} label="JWT Auth" />
-        <Stat value={all.filter(m=>m.type==='opa').length} label="OPA Policies" />
-        <Stat value={sec.length} label="Total Security" />
+        <Stat value={all.filter(m=>['jwt','jwtAuth'].includes(m.type)).length} label="JWT Auth" color={COLORS.identity.accent} />
+        <Stat value={all.filter(m=>m.type==='opa').length} label="OPA Policies" color={COLORS.traffic.accent} />
+        <Stat value={sec.length} label="Total Security" color={COLORS.brand} />
       </div>
       <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">Active Security Middlewares ({sec.length})</h2>
       {sec.length ? <div className="space-y-2">{sec.map(m => <Item key={m.name} name={m.name} type={m.type} status={m.status} provider={m.provider} onDelete={() => del(m.name)} />)}</div> : <p className="text-zinc-600 text-sm">No security middlewares. Use the buttons above to create one.</p>}
@@ -81,8 +81,8 @@ export function DistributedPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Stat value={all.filter(m=>m.type==='ratelimit').length} label="Rate Limiters" color="#3b82f6" />
         <Stat value={all.filter(m=>m.type==='httpcache').length} label="HTTP Caches" color="#06b6d4" />
-        <Stat value={all.filter(m=>m.type==='inflightreq').length} label="In-Flight" />
-        <Stat value={dist.length} label="Total" />
+        <Stat value={all.filter(m=>m.type==='inflightreq').length} label="In-Flight" color={COLORS.resilience.accent} />
+        <Stat value={dist.length} label="Total" color={COLORS.brand} />
       </div>
       <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">Active Distributed Middlewares ({dist.length})</h2>
       {dist.length ? <div className="space-y-2">{dist.map(m => <Item key={m.name} name={m.name} type={m.type} status={m.status} provider={m.provider} onDelete={() => del(m.name)} />)}</div> : <p className="text-zinc-600 text-sm">No distributed middlewares. Use the buttons above to create one.</p>}
@@ -124,10 +124,10 @@ export function APIMgmtPage() {
       </div>
       {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Stat value={fileR.length} label="Managed APIs" />
-        <Stat value={all.length} label="Total Middlewares" />
-        <Stat value={all.filter(m=>m.type==='apimock').length} label="Mock Endpoints" />
-        <Stat value={fileR.length > 0 ? 'Active' : 'Inactive'} label="Status" />
+        <Stat value={fileR.length} label="Managed APIs" color={COLORS.network.accent} />
+        <Stat value={all.length} label="Total Middlewares" color={COLORS.traffic.accent} />
+        <Stat value={all.filter(m=>m.type==='apimock').length} label="Mock Endpoints" color={COLORS.mock.accent} />
+        <Stat value={fileR.length > 0 ? 'Active' : 'Inactive'} label="Status" color={COLORS.ok.accent} />
       </div>
       <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">API Routes ({fileR.length})</h2>
       {fileR.length ? <div className="space-y-2">{fileR.map((r: any) => <Item key={r.name} name={r.name} type="router" status="enabled" provider="file" onDelete={() => del(r.name, 'routers')} />)}</div> : <p className="text-zinc-600 text-sm">No managed APIs. Click "Add API Route" to create one.</p>}

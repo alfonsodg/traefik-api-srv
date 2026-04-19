@@ -36,9 +36,9 @@ export function AIPage() {
       {adding && <AddForm title={`New ${adding}`} name={name} setName={setName} json={json} setJson={setJson} color="brand" onSave={save} onCancel={() => setAdding(null)} disabled={!name} />}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Stat value={ai.length} label="AI Middlewares" color={COLORS.identity.accent} />
-        <Stat value={ai.filter(m=>m.type==='semanticcache').length ? 'Active' : 'Off'} label="Semantic Cache" />
-        <Stat value={ai.filter(m=>m.type==='piiguard').length ? 'Active' : 'Off'} label="PII Guard" />
-        <Stat value={ai.filter(m=>m.type==='aigateway').length ? 'Active' : 'Off'} label="Gateway" />
+        <Stat value={ai.filter(m=>m.type==='semanticcache').length ? 'Active' : 'Off'} label="Semantic Cache" color={COLORS.cache.accent} />
+        <Stat value={ai.filter(m=>m.type==='piiguard').length ? 'Active' : 'Off'} label="PII Guard" color={COLORS.security.accent} />
+        <Stat value={ai.filter(m=>m.type==='aigateway').length ? 'Active' : 'Off'} label="Gateway" color={COLORS.brand} />
       </div>
       <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">Active AI Middlewares ({ai.length})</h2>
       {ai.length ? <div className="space-y-2">{ai.map(m => <Item key={m.name} name={m.name} type={m.type} status={m.status} provider={m.provider} onDelete={() => del(m.name)} />)}</div> : <p className="text-zinc-600 text-sm">No AI middlewares. Use the buttons above to create one.</p>}

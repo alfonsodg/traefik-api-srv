@@ -46,7 +46,7 @@ export function ClustersPage() {
       <div className="bg-zinc-900 border border-emerald-900/50 rounded-xl p-6">
         <div className="flex justify-between items-center mb-4">
           <div><p className="font-bold text-lg">Current Instance</p><p className="text-sm text-zinc-500">{(version as any)?.Version || 'dev'}</p></div>
-          <span className="text-emerald-400 font-semibold text-sm">● Healthy</span>
+          <span className="flex items-center gap-1.5 text-sm font-semibold" style={{ color: '#34d399' }}><span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#34d399', display: 'inline-block' }} /> Healthy</span>
         </div>
         <div className="grid grid-cols-4 gap-4">
           {[['Routes', (overview as any)?.http?.routers?.total || 0], ['Services', (overview as any)?.http?.services?.total || 0], ['Middlewares', (overview as any)?.http?.middlewares?.total || 0], ['Entrypoints', Array.isArray(entrypoints) ? entrypoints.length : 0]].map(([l, v]) => (
@@ -83,7 +83,7 @@ export function GrafanaPage() {
       <div className="space-y-4">
         {Array.isArray(dashboards) && dashboards.map((d: any) => (
           <div key={d.uid} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 flex justify-between items-center">
-            <div><p className="font-semibold">{d.title}</p><p className="text-sm text-zinc-500">{d.description}</p><p className="text-xs text-zinc-600 mt-1">{d.panels?.length || 0} panels • {d.uid}</p></div>
+            <div><p className="font-semibold">{d.title}</p><p className="text-sm text-zinc-500">{d.description}</p><p className="text-xs mt-1 flex items-center gap-2"><span style={{ color: '#71717a' }}>{d.panels?.length || 0} panels</span><span style={{ backgroundColor: '#2AA2C118', color: '#2AA2C1', borderRadius: 9999, padding: '2px 8px', fontSize: 10, fontWeight: 600 }}>{d.uid}</span></p></div>
             <button onClick={() => copy(d)} className={`px-4 py-2 rounded-lg text-sm font-semibold ${copied === d.uid ? 'bg-emerald-600 text-white' : 'bg-zinc-800 hover:bg-zinc-700'}`}>{copied === d.uid ? '✓ Copied!' : 'Copy JSON'}</button>
           </div>
         ))}

@@ -45,12 +45,14 @@ export function MetricsPage() {
       <p className="text-xs text-zinc-500">Internal metrics • auto-refresh 5s</p>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {Object.entries(m).map(([k, v]) => (
-          <div key={k} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+        {Object.entries(m).map(([k, v], i) => {
+          const colors = ['#2AA2C1', '#a855f7', '#f59e0b', '#10b981', '#3b82f6', '#06b6d4', '#ef4444', '#f97316']
+          return (
+          <div key={k} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5" style={{ borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: colors[i % colors.length] }}>
             <p className="text-3xl font-bold">{v}</p>
-            <p className="text-xs text-zinc-500 mt-1 uppercase tracking-wide">{k.replace(/([A-Z])/g, ' $1').trim()}</p>
+            <p style={{ fontSize: 10, color: '#71717a', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{k.replace(/([A-Z])/g, ' $1').trim()}</p>
           </div>
-        ))}
+        )})}
       </div>
 
       {ov?.features && (
@@ -60,7 +62,7 @@ export function MetricsPage() {
             {Object.entries(ov.features).map(([k, v]) => (
               <div key={k} className="flex justify-between items-center p-3 bg-zinc-800 rounded-lg text-sm">
                 <span className="text-zinc-400 capitalize">{k}</span>
-                <span className={`text-xs font-semibold ${v ? 'text-emerald-400' : 'text-zinc-600'}`}>{v ? (typeof v === 'boolean' ? 'ON' : String(v)) : 'OFF'}</span>
+                <StatusBadge status={v ? 'enabled' : 'disabled'} />
               </div>
             ))}
           </div>
@@ -94,17 +96,17 @@ export function HealthPage() {
       <p className="text-xs text-zinc-500">{svcs.length} services • auto-refresh 5s</p>
 
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-          <p className="text-3xl font-bold text-emerald-400">{svcs.filter((s: any) => s.status === 'enabled').length}</p>
-          <p className="text-xs text-zinc-500 mt-1">Healthy</p>
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5" style={{ borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: '#34d399' }}>
+          <p className="text-3xl font-bold" style={{ color: '#34d399' }}>{svcs.filter((s: any) => s.status === 'enabled').length}</p>
+          <p style={{ fontSize: 10, color: '#71717a', marginTop: 4, textTransform: 'uppercase' }}>Healthy</p>
         </div>
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-          <p className="text-3xl font-bold text-amber-400">{svcs.filter((s: any) => s.status === 'warning').length}</p>
-          <p className="text-xs text-zinc-500 mt-1">Warning</p>
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5" style={{ borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: '#fbbf24' }}>
+          <p className="text-3xl font-bold" style={{ color: '#fbbf24' }}>{svcs.filter((s: any) => s.status === 'warning').length}</p>
+          <p style={{ fontSize: 10, color: '#71717a', marginTop: 4, textTransform: 'uppercase' }}>Warning</p>
         </div>
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-          <p className="text-3xl font-bold text-red-400">{svcs.filter((s: any) => s.status === 'disabled').length}</p>
-          <p className="text-xs text-zinc-500 mt-1">Unhealthy</p>
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5" style={{ borderTopWidth: 3, borderTopStyle: 'solid', borderTopColor: '#f87171' }}>
+          <p className="text-3xl font-bold" style={{ color: '#f87171' }}>{svcs.filter((s: any) => s.status === 'disabled').length}</p>
+          <p style={{ fontSize: 10, color: '#71717a', marginTop: 4, textTransform: 'uppercase' }}>Unhealthy</p>
         </div>
       </div>
 
@@ -122,7 +124,7 @@ export function HealthPage() {
                 </p>
               </div>
             </div>
-            <span className={`text-xs font-semibold ${s.status === 'enabled' ? 'text-emerald-400' : 'text-red-400'}`}>{s.status}</span>
+            <StatusBadge status={s.status} />
           </div>
         ))}
       </div>

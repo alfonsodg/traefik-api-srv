@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import useSWR from 'swr'
 import { fetcher } from '@/lib/api'
 import { cn } from '@/lib/utils'
-import { COLORS } from '@/lib/design'
+import { StatusBadge } from '@/components/Badge'
 import {
   Activity, Bot, Wrench, Shield, Zap, Package, BarChart3,
   Settings, MonitorDot, ArrowRight, CheckCircle2, XCircle, AlertTriangle
@@ -40,9 +40,12 @@ function FeaturePanel({ icon, title, to, active, metrics }: {
         </div>
         <div className="space-y-2">
           {metrics.map((m, i) => (
-            <div key={i} className="flex justify-between text-xs">
+            <div key={i} className="flex justify-between items-center text-xs">
               <span className="text-zinc-500">{m.label}</span>
-              <span className="text-zinc-300 font-medium">{m.value}</span>
+              {typeof m.value === 'string' && ['Active', 'Off', 'On'].includes(m.value)
+                ? <StatusBadge status={m.value === 'Active' || m.value === 'On' ? 'enabled' : 'disabled'} />
+                : <span className="text-zinc-300 font-medium">{m.value}</span>
+              }
             </div>
           ))}
         </div>

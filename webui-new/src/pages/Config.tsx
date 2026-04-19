@@ -4,6 +4,8 @@ import useSWR, { mutate } from 'swr'
 import { fetcher, api } from '@/lib/api'
 import { ArrowLeft, Plus, Trash2, Save, X } from 'lucide-react'
 import type { Router, Service, Middleware } from '@/types/api'
+import { TypeBadge, StatusBadge } from '@/components/Badge'
+import { editableAccent } from '@/lib/design'
 
 function mutateAll() { mutate('/http/routers'); mutate('/http/services'); mutate('/http/middlewares') }
 
@@ -21,15 +23,19 @@ const MW_TYPES: Record<string, unknown> = {
   'basicAuth': { basicAuth: { users: ['admin:$apr1$hash'] } },
 }
 
-function ResourceItem({ name, detail, editable, onDelete }: { name: string; detail: string; editable: boolean; onDelete: () => void }) {
+function ResourceItem({ name, detail, type, status, editable, onDelete }: { name: string; detail: string; type?: string; status?: string; editable: boolean; onDelete: () => void }) {
   return (
-    <div className={`flex justify-between items-center p-4 rounded-lg border ${editable ? 'border-emerald-900/50 bg-emerald-950/20' : 'border-zinc-800 bg-zinc-900'}`}>
+    <div className="flex justify-between items-center p-4 rounded-lg border border-zinc-800 bg-zinc-900" style={editable ? editableAccent() : {}}>
       <div>
         <p className="font-medium text-sm">{name}</p>
-        <p className="text-xs text-zinc-500">{detail}</p>
+        <div className="flex items-center gap-2 mt-1">
+          {type && <TypeBadge type={type} />}
+          {status && <StatusBadge status={status} />}
+          {!type && <span style={{ fontSize: 10, color: '#52525b' }}>{detail}</span>}
+        </div>
       </div>
       <div className="flex items-center gap-2">
-        {!editable && <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-800/50 text-zinc-500 border border-zinc-700/50 uppercase">read-only</span>}
+        {!editable && <span style={{ fontSize: 10, color: '#52525b', backgroundColor: '#27272a', padding: '2px 8px', borderRadius: 9999 }}>read-only</span>}
         {editable && <button onClick={onDelete} className="p-1.5 rounded hover:bg-red-950 text-zinc-500 hover:text-red-400 transition-colors"><Trash2 size={14} /></button>}
       </div>
     </div>
@@ -150,9 +156,9 @@ export function ConfigPage() {
       {form === 'service' && <ServiceForm onDone={() => setForm(null)} />}
       {form === 'middleware' && <MiddlewareForm onDone={() => setForm(null)} />}
 
-      {tab === 'Routers' && <div className="space-y-2">{(routers || []).map(r => <ResourceItem key={r.name} name={r.name} detail={r.rule || r.status} editable={r.provider === 'file'} onDelete={() => del('routers', r.name)} />)}</div>}
-      {tab === 'Services' && <div className="space-y-2">{(services || []).map(s => <ResourceItem key={s.name} name={s.name} detail={s.type || s.status} editable={s.provider === 'file'} onDelete={() => del('services', s.name)} />)}</div>}
-      {tab === 'Middlewares' && <div className="space-y-2">{(middlewares || []).map(m => <ResourceItem key={m.name} name={m.name} detail={m.type} editable={m.provider === 'file'} onDelete={() => del('middlewares', m.name)} />)}</div>}
+      {tab === 'Routers' && <div className="space-y-2">{(routers || []).map(r => <ResourceItem key={r.name} name={r.name} detail={r.rule || r.status} type="router" status={r.status} editable={r.provider === 'file'} onDelete={() => del('routers', r.name)} />)}</div>}
+      {tab === 'Services' && <div className="space-y-2">{(services || []).map(s => <ResourceItem key={s.name} name={s.name} detail={s.type || s.status} status={s.status} editable={s.provider === 'file'} onDelete={() => del('services', s.name)} />)}</div>}
+      {tab === 'Middlewares' && <div className="space-y-2">{(middlewares || []).map(m => <ResourceItem key={m.name} name={m.name} detail={m.type} type={m.type} status={m.status} editable={m.provider === 'file'} onDelete={() => del('middlewares', m.name)} />)}</div>}
       {tab === 'Operations' && <OpsTab />}
     </div>
   )
