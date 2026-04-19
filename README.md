@@ -1,14 +1,14 @@
-<p align="center"><img src="docs/assets/logo-light.svg" alt="Traefik-XP" width="400"></p>
+<p align="center"><img src="docs/assets/logo-light.svg" alt="Traefik-XPX" width="400"></p>
 
-# Traefik-XP
+# Traefik-XPX
 
 **The open-source API Gateway that replaces 5 commercial Traefik products in one.**
 
-Traefik-XP combines Traefik Proxy + Hub API Gateway + Hub API Management + AI Gateway + MCP Gateway — all free, all open source.
+Traefik-XPX combines Traefik Proxy + Hub API Gateway + Hub API Management + AI Gateway + MCP Gateway — all free, all open source.
 
-## Why Traefik-XP?
+## Why Traefik-XPX?
 
-| | Traefik Proxy | Traefik Hub | Traefik Enterprise | **Traefik-XP** |
+| | Traefik Proxy | Traefik Hub | Traefik Enterprise | **Traefik-XPX** |
 |---|:---:|:---:|:---:|:---:|
 | Price | Free | $$$$ | $$$$ | **Free** |
 | Dashboard | Read-only | K8s only | Read-only | **Full CRUD** |
@@ -32,15 +32,15 @@ Traefik-XP combines Traefik Proxy + Hub API Gateway + Hub API Management + AI Ga
 
 ```bash
 # Docker
-docker pull alfonsodg/traefik-xp:latest
-docker run -d -p 80:80 -p 8099:8099 alfonsodg/traefik-xp:latest
+docker pull ccvass/traefik-xpx:latest
+docker run -d -p 80:80 -p 8099:8099 ccvass/traefik-xpx:latest
 
 # Docker Swarm
-docker stack deploy -c docker-compose.yml traefik-xp
+docker stack deploy -c docker-compose.yml traefik-xpx
 
 # Binary
-go build -o traefik-xp ./cmd/traefik
-./traefik-xp --configFile=/etc/traefik/traefik.yml
+go build -o traefik-xpx ./cmd/traefik
+./traefik-xpx --configFile=/etc/traefik/traefik.yml
 ```
 
 Dashboard: `http://localhost:8099/dashboard/`

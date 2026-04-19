@@ -16,7 +16,7 @@ python3 -c "import bcrypt; print(bcrypt.hashpw(b'YOUR_PASSWORD', bcrypt.gensalt(
 mkdir -p /mnt/traefik/{certs,fileprovider,logs}
 ```
 
-**Static config** (`/mnt/traefik/traefik-xp.yml`):
+**Static config** (`/mnt/traefik/traefik-xpx.yml`):
 
 ```yaml
 entryPoints:
@@ -71,7 +71,7 @@ api:
 
 ```bash
 docker service create \
-  --name traefik-xp \
+  --name traefik-xpx \
   --constraint 'node.role == manager' \
   --user 0:0 \
   --publish 80:80 \
@@ -82,12 +82,12 @@ docker service create \
   --mount type=bind,source=/mnt/traefik/certs,target=/certificates \
   --mount type=bind,source=/mnt/traefik/fileprovider,target=/fileprovider \
   --mount type=bind,source=/mnt/traefik/logs,target=/var/log \
-  --mount type=bind,source=/mnt/traefik/traefik-xp.yml,target=/etc/traefik/traefik.yml \
+  --mount type=bind,source=/mnt/traefik/traefik-xpx.yml,target=/etc/traefik/traefik.yml \
   --mount type=bind,source=/mnt/traefik/users.json,target=/etc/traefik/users.json \
   --mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
   --env CF_API_EMAIL=your-email@example.com \
   --env CF_API_KEY=your-cloudflare-api-key \
-  alfonsodg/traefik-xp:v1.1.1 \
+  ccvass/traefik-xpx:v1.1.1 \
   --configFile=/etc/traefik/traefik.yml
 ```
 
@@ -95,7 +95,7 @@ docker service create \
 
 ```bash
 # Check service
-docker service ls --filter name=traefik-xp
+docker service ls --filter name=traefik-xpx
 
 # Check routers discovered
 curl -s http://localhost:8099/api/overview
@@ -115,8 +115,8 @@ curl -s http://localhost:8099/api/overview
 
 ```yaml
 services:
-  traefik-xp:
-    image: alfonsodg/traefik-xp:v1.1.1
+  traefik-xpx:
+    image: ccvass/traefik-xpx:v1.1.1
     command: --configFile=/etc/traefik/traefik.yml
     ports:
       - "80:80"
@@ -137,22 +137,22 @@ services:
 
 ```bash
 # Download
-wget https://github.com/alfonsodg/traefik-xp/releases/latest/download/traefik-xp-linux-amd64.tar.gz
-tar xzf traefik-xp-linux-amd64.tar.gz
-sudo mv traefik-xp /usr/local/bin/
+wget https://github.com/ccvass/traefik-xpx/releases/latest/download/traefik-xpx-linux-amd64.tar.gz
+tar xzf traefik-xpx-linux-amd64.tar.gz
+sudo mv traefik-xpx /usr/local/bin/
 
 # Config
 sudo mkdir -p /etc/traefik
 # Create traefik.yml and users.json as above
 
 # Systemd service
-sudo tee /etc/systemd/system/traefik-xp.service << 'EOF'
+sudo tee /etc/systemd/system/traefik-xpx.service << 'EOF'
 [Unit]
-Description=Traefik-XP API Gateway
+Description=Traefik-XPX API Gateway
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/traefik-xp --configFile=/etc/traefik/traefik.yml
+ExecStart=/usr/local/bin/traefik-xpx --configFile=/etc/traefik/traefik.yml
 Restart=always
 RestartSec=5
 
@@ -160,14 +160,14 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 
-sudo systemctl enable --now traefik-xp
+sudo systemctl enable --now traefik-xpx
 ```
 
 ## Migration from Traefik v2
 
 Key CLI changes:
 
-| Traefik v2 | Traefik-XP v3 |
+| Traefik v2 | Traefik-XPX v3 |
 |-----------|--------------|
 | `--providers.docker.swarmmode` | `--providers.swarm` |
 | `--providers.docker.constraints=Label(...)` | `--providers.swarm.constraints=Label(...)` |
@@ -178,10 +178,10 @@ Key CLI changes:
 
 ```bash
 # Docker Swarm
-docker service update traefik-xp --rollback
+docker service update traefik-xpx --rollback
 
 # Or revert to specific image
-docker service update traefik-xp --image traefik:2.10.4
+docker service update traefik-xpx --image traefik:2.10.4
 ```
 
 ## Dashboard Usage
@@ -204,7 +204,7 @@ Login with the credentials configured in `authUser`/`authPassword`.
 | Logs | View Traefik and access logs in real-time. |
 | Metrics | View internal metrics, feature status, active providers. |
 | Health | Monitor service health with status dots. |
-| Multi-Cluster | Register remote Traefik-XP nodes. |
+| Multi-Cluster | Register remote Traefik-XPX nodes. |
 | Grafana | Copy pre-built Grafana dashboard JSON. |
 | Users | Create/delete dashboard users (bcrypt hashed). |
 | Settings | Configure ACME, entrypoints, providers, observability, AI, MCP. |
