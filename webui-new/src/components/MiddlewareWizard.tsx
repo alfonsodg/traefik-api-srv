@@ -113,7 +113,7 @@ export function MiddlewareWizard({ onDone }: { onDone: () => void }) {
         <p className="font-semibold text-sm text-brand">{MW_STEPS[type].label}</p>
         <div>
           <label className="text-xs text-zinc-500">Middleware Name</label>
-          <input value={name} onChange={e => setName(e.target.value)} placeholder="my-middleware" className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" />
+          <input value={name} onChange={e => setName(e.target.value)} placeholder="my-middleware" className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} />
         </div>
         {MW_STEPS[type].fields.map(f => (
           <div key={f.key}>
@@ -121,7 +121,7 @@ export function MiddlewareWizard({ onDone }: { onDone: () => void }) {
             {f.type === 'textarea' ? (
               <textarea value={vals[f.key] || ''} onChange={e => setVals({ ...vals, [f.key]: e.target.value })} rows={8} placeholder={f.placeholder} className="w-full mt-1 bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-3 text-xs font-mono outline-none focus:border-brand leading-relaxed text-emerald-300 selection:bg-brand/30 resize-y" />
             ) : (
-              <input value={vals[f.key] || ''} onChange={e => setVals({ ...vals, [f.key]: e.target.value })} placeholder={f.placeholder} className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand" />
+              <input value={vals[f.key] || ''} onChange={e => setVals({ ...vals, [f.key]: e.target.value })} placeholder={f.placeholder} className="w-full mt-1 rounded-lg px-3 py-2.5 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }} />
             )}
           </div>
         ))}

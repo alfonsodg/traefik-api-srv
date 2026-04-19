@@ -50,7 +50,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             <input
               type="text" value={username} onChange={e => setUsername(e.target.value)}
               autoFocus autoComplete="username"
-              className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-sm text-white outline-none focus:border-brand transition-colors"
+              className="w-full mt-1 rounded-lg px-4 py-3 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }}
               placeholder="admin"
             />
           </div>
@@ -59,7 +59,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             <input
               type="password" value={password} onChange={e => setPassword(e.target.value)}
               autoComplete="current-password"
-              className="w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-sm text-white outline-none focus:border-brand transition-colors"
+              className="w-full mt-1 rounded-lg px-4 py-3 text-sm outline-none transition-colors" style={{ backgroundColor: '#18181b', borderWidth: 1, borderStyle: 'solid', borderColor: '#3f3f46', color: '#e4e4e7' }}
               placeholder="••••••••"
             />
           </div>
