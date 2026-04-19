@@ -65,4 +65,4 @@ Dashboard: `http://localhost:8099/dashboard/`
 
 ## License
 
-Apache 2.0
+MIT
