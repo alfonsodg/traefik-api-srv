@@ -25,8 +25,9 @@ Traefik-XPX combines Traefik Proxy + Hub API Gateway + Hub API Management + AI G
 - **API Gateway**: 22+ middleware types, load balancing, circuit breaker, retry, health checks
 - **AI Gateway**: Multi-LLM routing (OpenAI, Anthropic, Ollama), semantic cache, PII guard
 - **MCP Gateway**: Tool-Based Access Control, policy engine, audit logging
-- **Security**: WAF, JWT, OIDC, LDAP, API Key, HMAC, OPA
+- **Security**: WAF, JWT, OIDC, LDAP, API Key, HMAC, OPA, GeoIP Blocking, Bot Detection
 - **Distributed**: Rate limiting, HTTP cache, in-flight limits (Valkey-backed)
+- **Transform**: Request/response header manipulation, CORS presets (permissive/strict/security)
 - **Dashboard**: Dark theme React UI with router/service/middleware tables, flow diagrams, search, CRUD, tooltips
 - **Auth**: JWT login with bcrypt passwords, user management, Valkey-backed HA
 - **Operations**: Backup/restore, auto-reload, multi-cluster, Grafana dashboards
