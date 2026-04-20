@@ -54,6 +54,7 @@ type Middleware struct {
 	WAF               *WAF               `json:"waf,omitempty" toml:"waf,omitempty" yaml:"waf,omitempty" export:"true"`
 	GeoIP             *GeoIP             `json:"geoip,omitempty" toml:"geoip,omitempty" yaml:"geoip,omitempty" export:"true"`
 	BotDetect         *BotDetect         `json:"botDetect,omitempty" toml:"botDetect,omitempty" yaml:"botDetect,omitempty" export:"true"`
+	Transform         *Transform         `json:"transform,omitempty" toml:"transform,omitempty" yaml:"transform,omitempty" export:"true"`
 	DistributedRateLimit *DistributedRateLimit `json:"distributedRateLimit,omitempty" toml:"distributedRateLimit,omitempty" yaml:"distributedRateLimit,omitempty" export:"true"`
 	DistributedInFlightReq *DistributedInFlightReq `json:"distributedInFlightReq,omitempty" toml:"distributedInFlightReq,omitempty" yaml:"distributedInFlightReq,omitempty" export:"true"`
 	HTTPCache         *HTTPCache         `json:"httpCache,omitempty" toml:"httpCache,omitempty" yaml:"httpCache,omitempty" export:"true"`
@@ -1150,4 +1151,18 @@ type BotDetect struct {
 	ChallengeMode     bool     `json:"challengeMode,omitempty" toml:"challengeMode,omitempty" yaml:"challengeMode,omitempty"`
 	CustomBlockPatterns []string `json:"customBlockPatterns,omitempty" toml:"customBlockPatterns,omitempty" yaml:"customBlockPatterns,omitempty"`
 	CustomAllowPatterns []string `json:"customAllowPatterns,omitempty" toml:"customAllowPatterns,omitempty" yaml:"customAllowPatterns,omitempty"`
+}
+
+// Transform holds the request/response transformation middleware configuration.
+type Transform struct {
+	RequestHeaders  *HeaderOps `json:"requestHeaders,omitempty" toml:"requestHeaders,omitempty" yaml:"requestHeaders,omitempty" export:"true"`
+	ResponseHeaders *HeaderOps `json:"responseHeaders,omitempty" toml:"responseHeaders,omitempty" yaml:"responseHeaders,omitempty" export:"true"`
+	CORSPreset      string     `json:"corsPreset,omitempty" toml:"corsPreset,omitempty" yaml:"corsPreset,omitempty" export:"true"`
+}
+
+// HeaderOps defines header add/set/remove operations.
+type HeaderOps struct {
+	Add    map[string]string `json:"add,omitempty" toml:"add,omitempty" yaml:"add,omitempty" export:"true"`
+	Set    map[string]string `json:"set,omitempty" toml:"set,omitempty" yaml:"set,omitempty" export:"true"`
+	Remove []string          `json:"remove,omitempty" toml:"remove,omitempty" yaml:"remove,omitempty" export:"true"`
 }

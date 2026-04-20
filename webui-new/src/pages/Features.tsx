@@ -39,6 +39,7 @@ export function SecurityPage() {
           <ActionBtn label="Add HMAC" onClick={() => startAdd('hmac')} color={COLORS.resilience.accent} />
           <ActionBtn label="Add GeoIP" onClick={() => startAdd('geoip')} color={COLORS.network.accent} />
           <ActionBtn label="Add Bot Detect" onClick={() => startAdd('botdetect')} color={COLORS.mock.accent} />
+          <ActionBtn label="Add Transform" onClick={() => startAdd('transform')} color={COLORS.transform.accent} />
         </div>
       </div>
       {adding && <AddForm title={`New ${getTypeLabel(adding || '')}`} name={name} setName={setName} json={json} setJson={setJson} color={getCategoryColors(adding || "").accent} onSave={save} onCancel={() => setAdding(null)} disabled={!name} typeKey={adding || ''} />}

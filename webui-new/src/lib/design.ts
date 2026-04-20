@@ -12,6 +12,7 @@ export const COLORS = {
   network: { bg: '#10b98118', text: '#34d399', border: '#10b98140', accent: '#10b981' },
   redirect: { bg: '#0ea5e918', text: '#38bdf8', border: '#0ea5e940', accent: '#0ea5e9' },
   mock: { bg: '#ec489918', text: '#f472b6', border: '#ec489940', accent: '#ec4899' },
+  transform: { bg: '#06b6d418', text: '#22d3ee', border: '#06b6d440', accent: '#06b6d4' },
   utility: { bg: '#71717a18', text: '#a1a1aa', border: '#71717a40', accent: '#71717a' },
   // Status
   ok: { bg: '#10b98118', text: '#34d399', border: '#10b98140', accent: '#10b981' },
@@ -35,7 +36,7 @@ const TYPE_MAP: Record<string, keyof typeof COLORS> = {
   headers: 'utility', buffering: 'utility', chain: 'utility', stripprefixregex: 'utility',
   contenttype: 'utility', mcpaudit: 'utility', mcppolicy: 'utility', mcpgovernance: 'utility',
   aigateway: 'identity',
-  geoip: 'network', botdetect: 'mock',
+  geoip: 'network', botdetect: 'mock', transform: 'transform',
 }
 
 export function getCategoryColors(type: string) {
@@ -116,7 +117,7 @@ export const TYPE_LABELS: Record<string, string> = {
   aigateway: 'AI Gateway', semanticcache: 'Semantic Cache', piiguard: 'PII Guard',
   tbac: 'TBAC Rule', mcpaudit: 'Audit Logger', mcppolicy: 'MCP Policy', mcpgovernance: 'MCP Governance',
   apimock: 'API Mock', router: 'API Route', basicauth: 'Basic Auth',
-  geoip: 'GeoIP Block', botdetect: 'Bot Detect',
+  geoip: 'GeoIP Block', botdetect: 'Bot Detect', transform: 'Transform',
 }
 export function getTypeLabel(type: string): string {
   return TYPE_LABELS[type] || type.charAt(0).toUpperCase() + type.slice(1)
@@ -203,6 +204,10 @@ export const TYPE_HELP: Record<string, { desc: string; fields: string }> = {
   botdetect: {
     desc: 'Bot Detection — blocks scrapers, vulnerability scanners, and automated attacks by User-Agent and request rate.',
     fields: 'blockKnownBots: true to block known malicious UAs (sqlmap, nikto, scrapy)\nallowGoodBots: true to allow Googlebot, Bingbot, Cloudflare\nrateThreshold: Max requests/minute per IP (e.g. 60)\nchallengeMode: true returns 429 instead of 403',
+  },
+  transform: {
+    desc: 'Request/Response Transform — add, set, or remove headers on requests and responses. Includes CORS and security presets.',
+    fields: 'requestHeaders.add: Headers to add to request (e.g. {"X-Custom": "value"})\nrequestHeaders.remove: Headers to strip (e.g. ["X-Powered-By"])\nresponseHeaders.set: Headers to set on response\ncorsPreset: "permissive", "strict", or "security"',
   },
   cluster: {
     desc: 'Remote Instance — register another Traefik-XPX node for multi-cluster monitoring.',

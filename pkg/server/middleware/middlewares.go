@@ -23,6 +23,7 @@ import (
 	"github.com/traefik/traefik/v3/pkg/middlewares/oidc"
 	"github.com/traefik/traefik/v3/pkg/middlewares/opa"
 	"github.com/traefik/traefik/v3/pkg/middlewares/waf"
+	"github.com/traefik/traefik/v3/pkg/middlewares/transform"
 	"github.com/traefik/traefik/v3/pkg/middlewares/auth"
 	"github.com/traefik/traefik/v3/pkg/middlewares/buffering"
 	"github.com/traefik/traefik/v3/pkg/middlewares/chain"
@@ -401,6 +402,16 @@ func (b *Builder) buildConstructor(ctx context.Context, middlewareName string) (
 		}
 		middleware = func(next http.Handler) (http.Handler, error) {
 			return botdetect.New(ctx, next, *config.BotDetect, middlewareName)
+		}
+	}
+
+	// Transform
+	if config.Transform != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return transform.New(ctx, next, *config.Transform, middlewareName)
 		}
 	}
 
