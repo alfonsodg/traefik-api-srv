@@ -12,7 +12,9 @@ import (
 	"github.com/traefik/traefik/v3/pkg/config/runtime"
 	"github.com/traefik/traefik/v3/pkg/middlewares/addprefix"
 	"github.com/traefik/traefik/v3/pkg/middlewares/apikey"
+	"github.com/traefik/traefik/v3/pkg/middlewares/botdetect"
 	"github.com/traefik/traefik/v3/pkg/middlewares/distributedratelimiter"
+	"github.com/traefik/traefik/v3/pkg/middlewares/geoip"
 	"github.com/traefik/traefik/v3/pkg/middlewares/httpcache"
 	"github.com/traefik/traefik/v3/pkg/middlewares/jwtauth"
 	"github.com/traefik/traefik/v3/pkg/middlewares/ldapauth"
@@ -379,6 +381,26 @@ func (b *Builder) buildConstructor(ctx context.Context, middlewareName string) (
 		}
 		middleware = func(next http.Handler) (http.Handler, error) {
 			return ipallowlist.New(ctx, next, *config.IPAllowList, middlewareName)
+		}
+	}
+
+	// GeoIP
+	if config.GeoIP != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return geoip.New(ctx, next, *config.GeoIP, middlewareName)
+		}
+	}
+
+	// BotDetect
+	if config.BotDetect != nil {
+		if middleware != nil {
+			return nil, badConf
+		}
+		middleware = func(next http.Handler) (http.Handler, error) {
+			return botdetect.New(ctx, next, *config.BotDetect, middlewareName)
 		}
 	}
 
